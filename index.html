@@ -1,0 +1,1420 @@
+<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kastil Bisma</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@600;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+  :root {
+    color-scheme: dark;
+    --night: #09060D;
+    --night-2: #120B14;
+    --wood: #241512;
+    --wood-2: #33201A;
+    --blood: #8E0F18;
+    --lacquer: #B3262E;
+    --vermilion: #E0482F;
+    --washi: #F1E4CA;
+    --washi-dim: #C9BA99;
+    --steel: #D8DEE6;
+    --gold: #D9A441;
+    --gold-dim: #8F6E34;
+    --muted: #A2927C;
+    --ok: #7FD1A0;
+    --display: 'Shippori Mincho B1', 'Hiragino Mincho ProN', 'Yu Mincho', Georgia, serif;
+    --body: 'Zen Kaku Gothic New', 'Hiragino Sans', 'Segoe UI', sans-serif;
+    --mono: 'JetBrains Mono', Consolas, Menlo, monospace;
+    --ease: cubic-bezier(.22, 1, .36, 1);
+    --spring: cubic-bezier(.34, 1.56, .64, 1);
+    --katana: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath d='M2 2 L20 20' stroke='%23D8DEE6' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M2 2 L19 19' stroke='%23ffffff' stroke-width='1'/%3E%3Cpath d='M18 22 L22 18' stroke='%23D9A441' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M21 21 L29 29' stroke='%23B3262E' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E") 2 2, crosshair;
+  }
+  * { box-sizing: border-box; }
+  html { overflow-x: clip; }
+  body { margin: 0; background: var(--night); color: var(--washi); font-family: var(--body); font-size: 17px; line-height: 1.7; overflow-x: clip; cursor: var(--katana); }
+  a, button { cursor: var(--katana); }
+  body::before { content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 0; background: radial-gradient(ellipse at 50% -10%, rgba(142, 15, 24, .35), transparent 60%), radial-gradient(ellipse at 50% 120%, rgba(142, 15, 24, .18), transparent 55%); }
+  body::after { content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 65; background: radial-gradient(ellipse at center, transparent 55%, rgba(0, 0, 0, .65) 100%); }
+  a { color: var(--gold); }
+  :focus-visible { outline: 2px solid var(--vermilion); outline-offset: 3px; }
+  h1, h2, h3 { font-family: var(--display); font-weight: 800; line-height: 1.12; margin: 0; text-wrap: balance; }
+  h2 { font-size: clamp(30px, 4.8vw, 50px); }
+  p { margin: 0; }
+  #embers, #slash, #sparks { position: fixed; inset: 0; pointer-events: none; }
+  #embers { z-index: 1; } #slash { z-index: 80; } #sparks { z-index: 81; }
+  body.shake main, body.shake .hero { animation: shake .45s cubic-bezier(.36,.07,.19,.97); }
+
+  /* intro */
+  .intro { position: fixed; inset: 0; z-index: 100; pointer-events: auto; display: grid; place-items: center; }
+  .intro .half { position: absolute; inset: 0; background: radial-gradient(ellipse at center, #1A0C12, #050307 70%); transition: transform 1s var(--ease); }
+  .intro .half.a { clip-path: polygon(0 0, 100% 0, 100% 38%, 0 62%); }
+  .intro .half.b { clip-path: polygon(0 62%, 100% 38%, 100% 100%, 0 100%); }
+  .intro.cut .half.a { transform: translate(-6%, -70%) rotate(-4deg); }
+  .intro.cut .half.b { transform: translate(6%, 70%) rotate(-4deg); }
+  .intro .line { position: absolute; left: -10%; right: -10%; top: 50%; height: 3px; background: linear-gradient(90deg, transparent, #fff 20%, #ffd9d0 50%, #fff 80%, transparent); transform: rotate(-13deg) scaleX(0); box-shadow: 0 0 24px 6px rgba(224, 72, 47, .8); z-index: 2; }
+  .intro.flash .line { animation: slashLine .35s ease-out forwards; }
+  .intro .stage { position: relative; z-index: 3; width: min(640px, 88vw); display: grid; gap: 22px; justify-items: center; transition: opacity .3s; }
+  .intro.cut .stage { opacity: 0; }
+  .intro .stage p { font: 700 13px/1 var(--mono); letter-spacing: .4em; color: var(--muted); }
+  .intro .stage b { font: 800 clamp(26px, 5vw, 40px)/1 var(--display); letter-spacing: .1em; }
+  .intro .skip { position: absolute; right: 18px; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); z-index: 4; font: 700 12px/1 var(--mono); letter-spacing: .2em; color: var(--muted); background: none; border: 1px solid #3a2a2a; padding: 10px 12px; border-radius: 3px; }
+  .intro.gone { display: none; }
+  .draw-blade { animation: unsheathe 1.1s var(--ease) .25s both; }
+
+  /* katana svg */
+  .katana { width: 100%; height: auto; overflow: visible; display: block; }
+  .katana .gleam { animation: gleam 3.2s ease-in-out infinite; }
+
+  /* hero */
+  .hero { position: relative; z-index: 2; min-height: 640px; height: 92vh; max-height: 940px; overflow: hidden; border-bottom: 1px solid rgba(179, 38, 46, .5); }
+  #castle { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  .hero-shade { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(90deg, rgba(9, 6, 13, .95) 0%, rgba(9, 6, 13, .55) 45%, transparent 75%), linear-gradient(0deg, var(--night) 0%, transparent 32%); }
+  .hero.flicker #castle { animation: flick .5s steps(4); }
+  .hero-inner { position: relative; z-index: 3; max-width: 1140px; margin: 0 auto; padding: 26px 24px 0; height: 100%; display: grid; grid-template-rows: auto 1fr auto; pointer-events: none; }
+  .hero-inner > * { pointer-events: auto; min-width: 0; }
+  .bar { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .seal { width: 54px; height: 54px; display: grid; place-items: center; background: var(--lacquer); color: var(--washi); font: 800 17px/1 var(--display); border-radius: 6px 9px 5px 8px; transform: rotate(-4deg); box-shadow: inset 0 0 0 2px rgba(241, 228, 202, .15), 0 0 30px rgba(179, 38, 46, .45); }
+  .bar-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+  .hero-copy { align-self: center; max-width: 640px; }
+  .floor { font: 700 13px/1 var(--mono); letter-spacing: .22em; text-transform: uppercase; color: var(--gold); display: inline-flex; align-items: center; gap: 12px; }
+  .floor .kanji { font: 800 22px/1 var(--display); letter-spacing: .1em; color: var(--vermilion); text-shadow: 0 0 14px rgba(224, 72, 47, .6); }
+  .floor::after { content: ""; width: 56px; height: 1px; background: var(--gold-dim); }
+  .hero h1 { font-size: clamp(42px, 7.2vw, 90px); margin-top: 18px; position: relative; }
+  .hero h1 .l { display: block; }
+  .hero h1 .l:nth-child(2) { color: var(--washi-dim); }
+  .hero h1.split .l:nth-child(1) { animation: splitUp .9s var(--ease); }
+  .hero h1.split .l:nth-child(2) { animation: splitDown .9s var(--ease); }
+  .role { margin-top: 18px; font: 700 clamp(18px, 2.4vw, 22px)/1.3 var(--body); color: var(--gold); letter-spacing: .06em; display: flex; align-items: center; gap: 12px; }
+  .role::before { content: ""; width: 10px; height: 10px; background: var(--vermilion); transform: rotate(45deg); flex: none; box-shadow: 0 0 12px var(--vermilion); }
+  .typed { margin-top: 10px; font: 500 16px/1.4 var(--mono); color: var(--muted); min-height: 1.5em; }
+  .typed .caret { display: inline-block; width: 8px; height: 1.05em; background: var(--vermilion); margin-left: 4px; vertical-align: -3px; animation: blink 1s steps(1) infinite; }
+  .ctas { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 28px; }
+  .hero-sword { position: absolute; right: -4%; bottom: 12%; width: min(620px, 58vw); z-index: 3; transform: rotate(-18deg); filter: drop-shadow(0 20px 30px rgba(0, 0, 0, .7)); transition: transform .5s var(--spring), filter .3s; }
+  .hero-sword:hover { transform: rotate(-20deg) translateX(-10px) scale(1.02); filter: drop-shadow(0 0 22px rgba(224, 72, 47, .55)) drop-shadow(0 20px 30px rgba(0, 0, 0, .7)); }
+  .hero-sword button { all: unset; display: block; width: 100%; cursor: var(--katana); }
+  .sword-tip { position: absolute; right: 24px; bottom: 7%; z-index: 4; font: 500 12px/1.4 var(--mono); color: var(--muted); letter-spacing: .08em; text-align: right; }
+  .zan { position: fixed; left: 50%; top: 50%; z-index: 85; font: 800 clamp(120px, 22vw, 260px)/1 var(--display); color: #fff; text-shadow: 0 0 30px var(--vermilion), 0 0 70px var(--lacquer); transform: translate(-50%, -50%) scale(.6); opacity: 0; pointer-events: none; }
+  .zan.on { animation: zan .9s var(--ease); }
+  .hint { font: 500 12.5px/1.4 var(--mono); color: var(--muted); padding-bottom: 22px; letter-spacing: .06em; }
+  .whisper { position: absolute; z-index: 2; writing-mode: vertical-rl; font: 800 22px/1 var(--display); color: rgba(224, 72, 47, .0); letter-spacing: .5em; animation: whisper 9s ease-in-out infinite; pointer-events: none; }
+  .whisper.w1 { left: 3%; top: 18%; } .whisper.w2 { right: 38%; top: 8%; animation-delay: 4.5s; font-size: 16px; }
+
+  .btn { position: relative; overflow: hidden; font: 700 15px/1 var(--body); letter-spacing: .06em; padding: 13px 20px; border-radius: 3px; border: 1px solid var(--gold-dim); background: rgba(18, 11, 20, .78); color: var(--washi); text-decoration: none; display: inline-flex; align-items: center; gap: 10px; transition: transform .35s var(--spring), border-color .3s, background .3s, box-shadow .3s; backdrop-filter: blur(4px); }
+  .btn::before { content: ""; position: absolute; top: -50%; bottom: -50%; width: 30%; left: -40%; background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .35), transparent); transform: skewX(-25deg); transition: left .6s var(--ease); }
+  .btn:hover { transform: translateY(-2px); border-color: var(--vermilion); box-shadow: 0 0 18px rgba(224, 72, 47, .35); }
+  .btn:hover::before { left: 120%; }
+  .btn:active { transform: translateY(1px) scale(.97); }
+  .btn.red { background: var(--lacquer); border-color: var(--vermilion); }
+  .btn.red:hover { background: var(--vermilion); }
+  .btn[aria-pressed="true"] { background: var(--lacquer); border-color: var(--vermilion); }
+
+  main { position: relative; z-index: 2; max-width: 1140px; margin: 0 auto; padding: 100px 24px 130px; display: grid; gap: 130px; }
+  main > * { min-width: 0; }
+  .head { display: grid; gap: 14px; margin-bottom: 34px; max-width: 66ch; }
+  .head p { color: var(--muted); }
+  .cutline { position: relative; display: inline-block; }
+  .cutline::after { content: ""; position: absolute; left: -4%; right: -4%; top: 52%; height: 2px; background: linear-gradient(90deg, transparent, #fff, var(--vermilion), transparent); transform: rotate(-4deg) scaleX(0); transform-origin: left; opacity: 0; box-shadow: 0 0 12px var(--vermilion); }
+  .cutline.cut::after { animation: headCut .7s var(--ease) forwards; }
+  .cutline.cut { animation: headShift .7s var(--ease); }
+
+  .panel { position: relative; background: linear-gradient(180deg, rgba(36, 21, 18, .94), rgba(22, 13, 14, .96)); border: 1px solid rgba(179, 38, 46, .35); border-radius: 5px; box-shadow: 0 24px 60px rgba(0, 0, 0, .6), inset 0 1px 0 rgba(241, 228, 202, .05); }
+  .panel::before { content: ""; position: absolute; left: 14px; right: 14px; top: -1px; height: 3px; background: var(--lacquer); border-radius: 0 0 3px 3px; box-shadow: 0 0 14px rgba(179, 38, 46, .6); }
+  .panel > * { min-width: 0; }
+
+  /* game */
+  .game { padding: 0; overflow: hidden; }
+  .game-top { display: flex; justify-content: space-between; align-items: center; gap: 14px; flex-wrap: wrap; padding: 18px 22px; border-bottom: 1px solid rgba(179, 38, 46, .3); }
+  .hud { display: flex; gap: 26px; flex-wrap: wrap; }
+  .hud div { font: 500 12px/1.2 var(--mono); letter-spacing: .12em; color: var(--muted); text-transform: uppercase; }
+  .hud b { display: block; font: 800 30px/1 var(--display); color: var(--washi); font-variant-numeric: tabular-nums; margin-bottom: 4px; }
+  .hud .combo b { color: var(--vermilion); }
+  .arena { position: relative; height: 440px; touch-action: none; }
+  #game { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  .overlay { position: absolute; inset: 0; display: grid; place-items: center; text-align: center; padding: 20px; background: radial-gradient(ellipse at center, rgba(9, 6, 13, .55), rgba(9, 6, 13, .9)); transition: opacity .4s; }
+  .overlay.hide { opacity: 0; pointer-events: none; }
+  .overlay .box { display: grid; gap: 14px; justify-items: center; max-width: 460px; }
+  .overlay h3 { font-size: clamp(26px, 4vw, 38px); }
+  .overlay p { color: var(--muted); font-size: 15px; }
+  .overlay .rank { font: 800 20px/1 var(--display); color: var(--vermilion); text-shadow: 0 0 16px rgba(224, 72, 47, .6); }
+  .legend { display: flex; gap: 18px; flex-wrap: wrap; justify-content: center; font: 500 12.5px/1.4 var(--mono); color: var(--muted); }
+  .legend span::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; vertical-align: -1px; }
+  .legend .bug::before { background: #9DE3FF; box-shadow: 0 0 8px #9DE3FF; }
+  .legend .gold::before { background: var(--gold); box-shadow: 0 0 8px var(--gold); }
+  .legend .skull::before { background: var(--vermilion); box-shadow: 0 0 8px var(--vermilion); }
+
+  /* RBAC */
+  .sim { padding: 28px; display: grid; gap: 20px; }
+  .roles { display: flex; gap: 10px; flex-wrap: wrap; }
+  .sim-note { color: var(--muted); font-size: 16px; }
+  .sim-note b { color: var(--washi); }
+  .tally { display: flex; gap: 34px; flex-wrap: wrap; }
+  .tally div { font: 500 12.5px/1.3 var(--mono); color: var(--muted); letter-spacing: .1em; text-transform: uppercase; }
+  .tally b { display: block; font: 800 40px/1 var(--display); color: var(--gold); font-variant-numeric: tabular-nums; margin-bottom: 6px; }
+  .rooms { display: grid; gap: 10px; }
+  .room { position: relative; overflow: hidden; display: grid; grid-template-columns: 1.4fr 1fr .7fr .8fr 1.2fr; gap: 12px; align-items: center; padding: 14px 16px; border-radius: 3px; background: rgba(9, 6, 13, .6); border: 1px solid rgba(217, 164, 65, .15); }
+  .room > * { min-width: 0; }
+  .room .t { font-weight: 700; }
+  .room .m { font: 500 13.5px/1.3 var(--mono); color: var(--muted); }
+  .room .m i { font-style: normal; color: var(--gold-dim); display: none; }
+  .tag { display: inline-block; font: 700 11.5px/1 var(--mono); letter-spacing: .08em; padding: 6px 9px; border-radius: 3px; border: 1px solid; }
+  .t-web { color: var(--gold); border-color: var(--gold-dim); } .t-net { color: #8FB8FF; border-color: #4F6D9C; } .t-app { color: var(--washi); border-color: var(--muted); } .t-gen { color: #FF9A86; border-color: var(--lacquer); }
+  .acc { font: 700 12.5px/1 var(--mono); letter-spacing: .06em; padding: 7px 10px; border-radius: 3px; justify-self: start; }
+  .acc.full { background: rgba(127, 209, 160, .14); color: var(--ok); } .acc.ro { background: rgba(217, 164, 65, .14); color: var(--gold); } .acc.none { background: rgba(224, 72, 47, .14); color: var(--vermilion); }
+  .room .shut { position: absolute; top: 0; bottom: 0; width: 50%; z-index: 2; background-color: rgba(58, 30, 24, .96); background-image: linear-gradient(#170C0C 2px, transparent 2px), linear-gradient(90deg, #170C0C 2px, transparent 2px); background-size: 36px 22px; transition: transform .7s var(--ease); }
+  .room .shut.l { left: 0; transform: translateX(-101%); } .room .shut.r { right: 0; transform: translateX(101%); }
+  .room.closed .shut { transform: translateX(0); }
+  .room .eyes { position: absolute; z-index: 3; left: 50%; top: 50%; width: 46px; height: 12px; margin: -6px 0 0 -23px; display: flex; justify-content: space-between; opacity: 0; transition: opacity .4s .5s; pointer-events: none; }
+  .room.closed .eyes { opacity: 1; }
+  .room .eyes i { width: 14px; height: 7px; border-radius: 50%; background: var(--vermilion); box-shadow: 0 0 10px 3px rgba(224, 72, 47, .8); animation: blinkEye 4s infinite; }
+  .room .whisper-label { position: absolute; z-index: 3; right: 14px; top: 50%; transform: translateY(-50%); font: 700 11px/1 var(--mono); letter-spacing: .2em; color: rgba(224, 72, 47, .8); opacity: 0; transition: opacity .4s .6s; }
+  .room.closed .whisper-label { opacity: 1; }
+
+  /* stairs */
+  .stairs { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; align-items: end; }
+  .step { position: relative; display: flex; flex-direction: column; justify-content: flex-end; min-width: 0; text-align: left; font: inherit; color: var(--washi); background: linear-gradient(180deg, var(--wood-2), var(--wood)); border: 1px solid rgba(179, 38, 46, .3); border-radius: 3px 3px 0 0; padding: 16px 14px; transition: transform .45s var(--spring), border-color .3s, background .3s; }
+  .step:nth-child(1) { height: 110px; } .step:nth-child(2) { height: 140px; } .step:nth-child(3) { height: 170px; } .step:nth-child(4) { height: 200px; } .step:nth-child(5) { height: 230px; }
+  .step .k { font: 800 30px/1 var(--display); color: var(--gold); display: block; }
+  .step .n { font: 700 14px/1.3 var(--body); display: block; margin-top: 8px; overflow-wrap: anywhere; }
+  .step .lamp { position: absolute; top: -34px; left: 50%; width: 22px; height: 30px; margin-left: -11px; border-radius: 10px 10px 12px 12px; background: #2B0E0E; border: 1px solid var(--gold-dim); transition: background .4s, box-shadow .4s; transform-origin: 50% -8px; }
+  .step .lamp::before { content: ""; position: absolute; left: 50%; top: -10px; width: 1px; height: 10px; background: var(--gold-dim); }
+  .step:hover { transform: translateY(-6px); border-color: var(--vermilion); }
+  .step[aria-selected="true"] { background: linear-gradient(180deg, var(--lacquer), #5A0D12); border-color: var(--vermilion); }
+  .step[aria-selected="true"] .lamp, .step.lit .lamp { background: var(--vermilion); box-shadow: 0 0 22px 6px rgba(224, 72, 47, .55); animation: sway 3s ease-in-out infinite; }
+  .detail { margin-top: 26px; padding: 28px; display: grid; grid-template-columns: 1fr 1.1fr; gap: 26px; align-items: start; }
+  .detail h3 { font-size: 30px; margin: 8px 0 10px; }
+  .detail p { color: var(--muted); }
+  pre.code { margin: 0; background: rgba(9, 6, 13, .85); color: var(--washi); border: 1px solid rgba(217, 164, 65, .18); border-left: 3px solid var(--vermilion); border-radius: 3px; padding: 16px 18px; font: 500 13.5px/1.75 var(--mono); overflow-x: auto; }
+  .fadein { animation: fadein .6s var(--ease); }
+
+  /* tests */
+  .tests { display: grid; grid-template-columns: 1.3fr .8fr; gap: 24px; align-items: start; }
+  .tests > * { min-width: 0; }
+  .list { padding: 24px 26px; }
+  .list ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+  .list li { position: relative; display: grid; grid-template-columns: 30px 1fr; gap: 12px; align-items: center; font: 500 14px/1.5 var(--mono); color: var(--muted); transition: color .4s; padding: 3px 0; }
+  .list li span:last-child { overflow-wrap: anywhere; }
+  .list li .lan { width: 18px; height: 24px; border-radius: 8px 8px 9px 9px; background: #2B0E0E; border: 1px solid var(--gold-dim); justify-self: center; transition: background .4s, box-shadow .4s; }
+  .list li.lit { color: var(--washi); }
+  .list li.lit .lan { background: var(--vermilion); box-shadow: 0 0 16px 4px rgba(224, 72, 47, .5); }
+  .list li::after { content: ""; position: absolute; left: -6px; right: -6px; top: 50%; height: 2px; background: linear-gradient(90deg, transparent, #fff, var(--vermilion), transparent); transform: scaleX(0) rotate(-2deg); transform-origin: left; box-shadow: 0 0 10px var(--vermilion); opacity: 0; }
+  .list li.slashed::after { animation: headCut .45s var(--ease) forwards; }
+  .result { padding: 26px; display: grid; gap: 16px; justify-items: start; }
+  .score { font: 800 68px/1 var(--display); color: var(--gold); font-variant-numeric: tabular-nums; }
+  .meter { width: 100%; height: 6px; background: rgba(241, 228, 202, .1); border-radius: 3px; overflow: hidden; }
+  .meter div { height: 100%; width: 0; background: linear-gradient(90deg, var(--blood), var(--vermilion)); transition: width .3s linear; box-shadow: 0 0 10px var(--vermilion); }
+  .stamp { font: 800 30px/1 var(--display); color: var(--vermilion); border: 3px solid var(--vermilion); padding: 10px 16px; border-radius: 5px; transform: rotate(-8deg) scale(0); transition: transform .5s var(--spring); text-shadow: 0 0 12px rgba(224, 72, 47, .6); }
+  .stamp.on { transform: rotate(-8deg) scale(1); }
+  label, .label { font: 700 12px/1 var(--mono); letter-spacing: .16em; text-transform: uppercase; color: var(--gold); display: block; margin-bottom: 10px; }
+
+  /* commit */
+  .builder { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: start; }
+  .builder > * { min-width: 0; }
+  .builder .panel { padding: 26px; display: grid; gap: 18px; }
+  .types { display: flex; flex-wrap: wrap; gap: 8px; }
+  .types .btn { padding: 9px 13px; font: 700 13px/1 var(--mono); }
+  input[type="text"] { width: 100%; font: 500 15px/1.4 var(--mono); padding: 12px 14px; background: rgba(9, 6, 13, .75); color: var(--washi); border: 1px solid rgba(217, 164, 65, .28); border-radius: 3px; }
+  input[type="text"]:focus { outline: none; border-color: var(--vermilion); box-shadow: 0 0 0 3px rgba(224, 72, 47, .2); }
+  .rules { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; font-size: 15px; }
+  .rules li { display: flex; gap: 12px; align-items: center; color: var(--muted); }
+  .rules li::before { content: ""; width: 10px; height: 10px; transform: rotate(45deg); border: 1px solid var(--gold-dim); flex: none; transition: background .3s, box-shadow .3s; }
+  .rules li.ok { color: var(--washi); }
+  .rules li.ok::before { background: var(--vermilion); border-color: var(--vermilion); box-shadow: 0 0 10px rgba(224, 72, 47, .6); }
+  .scroll { position: relative; padding: 30px 26px; background: var(--washi); color: #2A1A14; border-radius: 2px; font: 700 16px/1.6 var(--mono); overflow-wrap: anywhere; box-shadow: 0 16px 40px rgba(0, 0, 0, .6); }
+  .scroll::before, .scroll::after { content: ""; position: absolute; left: -8px; right: -8px; height: 12px; background: linear-gradient(180deg, #4A2A1E, #1C0F0B); border-radius: 6px; }
+  .scroll::before { top: -6px; } .scroll::after { bottom: -6px; }
+  .scroll .ty { color: var(--lacquer); }
+
+  /* stack */
+  .filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 30px; }
+  .filters .btn { padding: 9px 14px; font-size: 14px; }
+  .filters .btn .c { font: 500 12px/1 var(--mono); color: var(--gold); }
+  .groups { display: grid; gap: 40px; }
+  .group.off { display: none; }
+  .group.enter .plaque { animation: plaqueIn .6s var(--spring) both; }
+  .group-title { display: flex; align-items: baseline; gap: 14px; margin-bottom: 16px; }
+  .group-title h3 { font-size: 24px; }
+  .group-title small { font: 500 12.5px/1 var(--mono); color: var(--muted); letter-spacing: .1em; }
+  .cards { display: grid; grid-template-columns: repeat(var(--cols, 3), minmax(0, 1fr)); gap: 16px; }
+  .plaque { position: relative; overflow: hidden; display: grid; grid-template-columns: 54px 1fr; gap: 6px 16px; align-items: start; padding: 20px 18px; border-radius: 3px; background: linear-gradient(160deg, var(--wood-2), var(--wood)); border: 1px solid rgba(179, 38, 46, .25); transition: transform .45s var(--spring), border-color .3s, box-shadow .3s; }
+  .plaque > * { min-width: 0; }
+  .plaque::after { content: ""; position: absolute; top: -20%; bottom: -20%; width: 3px; left: -10%; background: linear-gradient(180deg, transparent, #fff, var(--vermilion), transparent); transform: rotate(25deg); box-shadow: 0 0 14px var(--vermilion); opacity: 0; }
+  .plaque:hover { transform: translateY(-5px); border-color: var(--vermilion); box-shadow: 0 16px 34px rgba(0, 0, 0, .55), 0 0 22px rgba(179, 38, 46, .25); }
+  .plaque:hover::after { animation: plaqueCut .5s var(--ease); }
+  .hanko { grid-row: span 2; width: 54px; height: 54px; display: grid; place-items: center; background: var(--lacquer); color: var(--washi); font: 800 17px/1 var(--display); border-radius: 5px 8px 4px 7px; transform: rotate(-5deg); transition: transform .5s var(--spring); box-shadow: inset 0 0 0 2px rgba(241, 228, 202, .18); }
+  .plaque:hover .hanko { transform: rotate(4deg) scale(1.08); }
+  .hanko svg { width: 30px; height: 30px; }
+  .plaque b { font: 800 19px/1.2 var(--display); }
+  .plaque b em { display: block; font: 500 12px/1.4 var(--mono); font-style: normal; color: var(--vermilion); }
+  .plaque p { font-size: 14.5px; line-height: 1.6; color: var(--muted); }
+
+  footer { display: grid; grid-template-columns: 1fr auto; gap: 26px; align-items: end; padding-top: 40px; border-top: 1px solid rgba(179, 38, 46, .4); }
+  footer > * { min-width: 0; }
+  footer .big { font: 800 clamp(32px, 5vw, 56px)/1.1 var(--display); }
+  footer .big span { color: var(--vermilion); text-shadow: 0 0 20px rgba(224, 72, 47, .4); }
+  .contact { display: grid; gap: 12px; justify-items: end; }
+  .mail { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; justify-content: flex-end; }
+  .mail code { font: 700 15px/1 var(--mono); padding: 12px 14px; border: 1px solid rgba(217, 164, 65, .3); border-radius: 3px; background: rgba(9, 6, 13, .6); user-select: all; overflow-wrap: anywhere; }
+
+  .tool { position: fixed; right: 18px; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); z-index: 90; }
+  .tool .btn { padding: 11px 14px; font-size: 13px; }
+
+  .reveal { transition: transform 1s var(--ease); }
+  .reveal.pre { transform: translateY(40px); }
+
+
+  /* hero extras */
+  .meta-line { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; font: 500 14px/1.4 var(--mono); color: var(--muted); }
+  .open-badge { display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; border: 1px solid rgba(127, 209, 160, .45); border-radius: 999px; color: var(--ok); font: 700 12.5px/1 var(--mono); letter-spacing: .06em; background: rgba(127, 209, 160, .08); }
+  .open-badge i { width: 8px; height: 8px; border-radius: 50%; background: var(--ok); box-shadow: 0 0 0 0 rgba(127, 209, 160, .6); animation: ping 1.8s infinite; }
+
+  /* profile */
+  .profile { display: grid; grid-template-columns: 1.25fr 1fr; gap: 24px; align-items: start; }
+  .profile > * { min-width: 0; }
+  .about { padding: 28px; display: grid; gap: 20px; }
+  .about p { color: var(--washi-dim); font-size: 17px; }
+  .about p b { color: var(--washi); }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip { font: 700 13px/1 var(--mono); padding: 8px 12px; border-radius: 3px; border: 1px solid rgba(217, 164, 65, .35); color: var(--washi); background: rgba(9, 6, 13, .5); transition: transform .3s var(--spring), border-color .3s; }
+  .chip:hover { transform: translateY(-3px); border-color: var(--vermilion); }
+  .chip.learn { display: inline-flex; align-items: center; gap: 8px; }
+  .chip.learn::before { content: ""; width: 8px; height: 11px; border-radius: 4px; background: var(--vermilion); box-shadow: 0 0 10px var(--vermilion); animation: glowPulse 2s ease-in-out infinite; }
+  .facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  .fact { padding: 20px 18px; display: grid; gap: 6px; }
+  .fact b { font: 800 30px/1.05 var(--display); color: var(--gold); overflow-wrap: anywhere; }
+  .fact span { font: 500 12.5px/1.4 var(--mono); color: var(--muted); letter-spacing: .06em; text-transform: uppercase; }
+  .certs { display: grid; gap: 12px; margin-top: 12px; }
+  .cert { display: grid; grid-template-columns: 54px 1fr; gap: 14px; align-items: center; padding: 16px 18px; }
+  .cert .hanko { grid-row: auto; }
+  .cert b { font: 800 18px/1.2 var(--display); display: block; }
+  .cert small { font: 500 13px/1.4 var(--mono); color: var(--muted); }
+
+  /* timeline */
+  .timeline { position: relative; display: grid; gap: 26px; padding-left: 0; }
+  .timeline::before { content: ""; position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; margin-left: -1px; background: linear-gradient(180deg, transparent, var(--lacquer) 8%, var(--lacquer) 92%, transparent); box-shadow: 0 0 12px rgba(179, 38, 46, .5); }
+  .t-item { position: relative; width: calc(50% - 34px); }
+  .t-item:nth-child(odd) { justify-self: start; }
+  .t-item:nth-child(even) { justify-self: end; }
+  .t-item .node { position: absolute; top: 26px; width: 18px; height: 24px; border-radius: 8px 8px 9px 9px; background: #2B0E0E; border: 1px solid var(--gold-dim); transition: background .5s, box-shadow .5s; }
+  .t-item:nth-child(odd) .node { right: -44px; }
+  .t-item:nth-child(even) .node { left: -44px; }
+  .t-item.lit .node { background: var(--vermilion); box-shadow: 0 0 20px 5px rgba(224, 72, 47, .55); }
+  .t-card { padding: 22px 24px; display: grid; gap: 10px; transition: transform .5s var(--spring), border-color .3s; }
+  .t-item.lit .t-card { border-color: rgba(224, 72, 47, .55); }
+  .t-card .phase { font: 700 12px/1 var(--mono); letter-spacing: .2em; color: var(--vermilion); text-transform: uppercase; }
+  .t-card h3 { font-size: 24px; }
+  .t-card p { color: var(--muted); font-size: 15.5px; }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tags span { font: 700 11.5px/1 var(--mono); padding: 5px 8px; border-radius: 3px; background: rgba(217, 164, 65, .12); color: var(--gold); }
+
+  /* projects */
+  .projects { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); grid-auto-flow: dense; gap: 16px; }
+  .proj { position: relative; overflow: hidden; padding: 22px; display: grid; gap: 12px; align-content: start; border-radius: 4px; background: linear-gradient(160deg, var(--wood-2), var(--wood)); border: 1px solid rgba(179, 38, 46, .28); transition: transform .45s var(--spring), border-color .3s, box-shadow .3s; }
+  .proj > * { min-width: 0; }
+  .proj::after { content: ""; position: absolute; top: -20%; bottom: -20%; width: 3px; left: -10%; background: linear-gradient(180deg, transparent, #fff, var(--vermilion), transparent); transform: rotate(25deg); box-shadow: 0 0 14px var(--vermilion); opacity: 0; }
+  .proj:hover { transform: translateY(-6px); border-color: var(--vermilion); box-shadow: 0 18px 36px rgba(0, 0, 0, .55), 0 0 22px rgba(179, 38, 46, .25); }
+  .proj:hover::after { animation: plaqueCut .5s var(--ease); }
+  .proj.off { display: none; }
+  .proj.enter { animation: plaqueIn .55s var(--spring) both; }
+  .proj .cat { display: flex; justify-content: space-between; align-items: center; gap: 10px; font: 700 11.5px/1 var(--mono); letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
+  .proj .cat em { font-style: normal; color: var(--vermilion); }
+  .proj h3 { font-size: 22px; }
+  .proj p { color: var(--muted); font-size: 15px; }
+  .proj.star { grid-column: span 2; grid-row: span 2; align-content: center; border-color: rgba(217, 164, 65, .5); background: linear-gradient(160deg, #4A1F1A, var(--wood)); }
+  .proj.star h3 { font-size: 30px; }
+  .proj .feat { list-style: none; margin: 4px 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 16px; }
+  .proj .feat li { display: flex; gap: 10px; align-items: baseline; font-size: 14.5px; color: var(--washi-dim); }
+  .proj .feat li::before { content: ""; width: 7px; height: 7px; transform: rotate(45deg) translateY(-2px); background: var(--vermilion); flex: none; }
+
+  /* security */
+  .sec { display: grid; grid-template-columns: 1fr 1.1fr; gap: 24px; align-items: start; }
+  .sec > * { min-width: 0; }
+  .moves { display: grid; gap: 12px; }
+  .move { display: grid; grid-template-columns: 46px 1fr; gap: 14px; padding: 18px; align-items: start; }
+  .move .num { width: 46px; height: 46px; display: grid; place-items: center; border: 1px solid var(--vermilion); color: var(--vermilion); font: 800 20px/1 var(--display); border-radius: 50%; box-shadow: inset 0 0 12px rgba(224, 72, 47, .3); }
+  .move b { font: 800 18px/1.25 var(--display); display: block; margin-bottom: 4px; }
+  .move p { color: var(--muted); font-size: 14.5px; }
+  .scan { padding: 24px; display: grid; gap: 16px; }
+  .scan-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .scan-top code { font: 500 13px/1.4 var(--mono); color: var(--muted); overflow-wrap: anywhere; }
+  .scan-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+  .alerts { display: grid; gap: 8px; min-height: 212px; }
+  .alert { position: relative; overflow: hidden; display: grid; grid-template-columns: auto 1fr auto; gap: 12px; align-items: center; padding: 12px 14px; border-radius: 3px; background: rgba(9, 6, 13, .6); border: 1px solid rgba(217, 164, 65, .15); animation: fadein .4s var(--ease); }
+  .alert > * { min-width: 0; }
+  .alert .lv { font: 700 11px/1 var(--mono); letter-spacing: .1em; padding: 5px 8px; border-radius: 3px; }
+  .lv.high { background: rgba(224, 72, 47, .18); color: #FF7A62; } .lv.med { background: rgba(217, 164, 65, .18); color: var(--gold); } .lv.low { background: rgba(143, 184, 255, .15); color: #8FB8FF; }
+  .alert .nm { font-size: 14.5px; font-weight: 700; overflow-wrap: anywhere; }
+  .alert .st { font: 700 11.5px/1 var(--mono); color: var(--vermilion); letter-spacing: .06em; }
+  .alert.fixed .nm { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--vermilion); }
+  .alert.fixed .st { color: var(--ok); }
+  .alert::after { content: ""; position: absolute; left: -5%; right: -5%; top: 50%; height: 2px; background: linear-gradient(90deg, transparent, #fff, var(--vermilion), transparent); transform: scaleX(0) rotate(-2deg); transform-origin: left; opacity: 0; box-shadow: 0 0 10px var(--vermilion); }
+  .alert.fixed::after { animation: headCut .45s var(--ease) forwards; }
+  .scan-empty { font: 500 13.5px/1.6 var(--mono); color: var(--muted); padding: 18px; border: 1px dashed rgba(217, 164, 65, .25); border-radius: 3px; }
+  .scan-note { font: 500 12px/1.5 var(--mono); color: var(--muted); }
+
+  @keyframes ping { 0% { box-shadow: 0 0 0 0 rgba(127, 209, 160, .6); } 100% { box-shadow: 0 0 0 10px rgba(127, 209, 160, 0); } }
+  @keyframes glowPulse { 0%, 100% { opacity: .55; } 50% { opacity: 1; } }
+
+  @media (max-width: 860px) {
+    .profile, .sec { grid-template-columns: 1fr; }
+    .projects { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .proj.star { grid-row: auto; }
+    .timeline::before { left: 11px; }
+    .t-item, .t-item:nth-child(odd), .t-item:nth-child(even) { width: auto; justify-self: stretch; margin-left: 38px; }
+    .t-item:nth-child(odd) .node, .t-item:nth-child(even) .node { left: -36px; right: auto; }
+  }
+  @media (max-width: 600px) {
+    .projects { grid-template-columns: 1fr; }
+    .proj.star { grid-column: auto; }
+    .proj .feat { grid-template-columns: 1fr; }
+    .about, .scan { padding: 20px 16px; }
+    .fact b { font-size: 24px; }
+    .alert { grid-template-columns: auto 1fr; }
+    .alert .st { grid-column: 1 / -1; }
+  }
+
+  @keyframes blink { 50% { opacity: 0; } }
+  @keyframes zan { 0% { opacity: 0; transform: translate(-50%, -50%) scale(1.6) rotate(-6deg); } 25% { opacity: .95; transform: translate(-50%, -50%) scale(1) rotate(-4deg); } 100% { opacity: 0; transform: translate(-50%, -50%) scale(.9) rotate(-4deg); } }
+  @keyframes sway { 0%, 100% { rotate: -5deg; } 50% { rotate: 5deg; } }
+  @keyframes fadein { from { opacity: .2; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+  @keyframes plaqueIn { from { transform: translateY(20px) rotateX(35deg); opacity: .2; } to { transform: none; opacity: 1; } }
+  @keyframes plaqueCut { from { left: -10%; opacity: 1; } to { left: 110%; opacity: 1; } }
+  @keyframes slashLine { 0% { transform: rotate(-13deg) scaleX(0); opacity: 1; } 60% { transform: rotate(-13deg) scaleX(1); opacity: 1; } 100% { transform: rotate(-13deg) scaleX(1); opacity: 0; } }
+  @keyframes unsheathe { from { transform: translateX(-38%); } to { transform: none; } }
+  @keyframes gleam { 0%, 60% { transform: translateX(-120px); } 100% { transform: translateX(560px); } }
+  @keyframes headCut { 0% { transform: rotate(-4deg) scaleX(0); opacity: 1; } 60% { transform: rotate(-4deg) scaleX(1); opacity: 1; } 100% { transform: rotate(-4deg) scaleX(1); opacity: 0; } }
+  @keyframes headShift { 0% { clip-path: inset(0 0 0 0); transform: none; } 30% { transform: translate(3px, -2px); } 60% { transform: translate(-2px, 1px); } 100% { transform: none; } }
+  @keyframes splitUp { 0% { transform: none; } 20% { transform: translate(-14px, -8px) rotate(-1.5deg); } 100% { transform: none; } }
+  @keyframes splitDown { 0% { transform: none; } 20% { transform: translate(14px, 8px) rotate(1deg); } 100% { transform: none; } }
+  @keyframes shake { 0%, 100% { transform: none; } 20% { transform: translate(-6px, 3px); } 40% { transform: translate(5px, -4px); } 60% { transform: translate(-3px, 2px); } 80% { transform: translate(2px, -1px); } }
+  @keyframes flick { 0% { opacity: 1; } 25% { opacity: .35; } 50% { opacity: .9; } 75% { opacity: .2; } 100% { opacity: 1; } }
+  @keyframes whisper { 0%, 100% { color: rgba(224, 72, 47, 0); } 45%, 55% { color: rgba(224, 72, 47, .28); } }
+  @keyframes blinkEye { 0%, 92%, 100% { transform: scaleY(1); } 95% { transform: scaleY(.1); } }
+
+  @media (max-width: 860px) {
+    .tests, .builder, .detail, footer { grid-template-columns: 1fr; }
+    .contact { justify-items: start; } .mail { justify-content: flex-start; }
+    .cards { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+    .room { grid-template-columns: 1fr auto; }
+    .room .m i { display: inline; }
+    .room .acc { grid-column: 1 / -1; }
+    .hero-sword { width: 76vw; right: -18%; bottom: 30%; opacity: .55; }
+    .sword-tip { display: none; }
+  }
+  @media (max-width: 600px) {
+    body { font-size: 16px; }
+    .hero { min-height: 640px; height: 94vh; }
+    .hero-shade { background: linear-gradient(0deg, rgba(9, 6, 13, .97) 0%, rgba(9, 6, 13, .7) 55%, rgba(9, 6, 13, .3) 100%); }
+    .hero-inner { padding: 20px 16px 0; }
+    .hero-copy { align-self: end; padding-bottom: 12px; }
+    .hero-sword { width: 92vw; right: -30%; bottom: 52%; opacity: .5; }
+    .whisper { display: none; }
+    .ctas .btn { flex: 1 1 auto; justify-content: center; }
+    main { padding: 70px 16px 120px; gap: 100px; }
+    .sim, .detail, .list, .result, .builder .panel { padding: 20px 16px; }
+    .game-top { padding: 14px 16px; }
+    .hud { gap: 16px; } .hud b { font-size: 24px; }
+    .arena { height: 420px; }
+    .roles .btn { flex: 1 1 100%; justify-content: center; }
+    .tally { gap: 22px; } .tally b { font-size: 32px; }
+    .stairs { gap: 6px; }
+    .stairs { grid-template-columns: 1fr; gap: 8px; }
+    .step { height: auto !important; flex-direction: row; justify-content: flex-start; align-items: center; gap: 14px; padding: 14px 56px 14px 16px; margin-left: calc(var(--i) * 14px); border-radius: 3px; }
+    .step .k { font-size: 24px; }
+    .step .n { margin-top: 0; font-size: 15px; }
+    .step .lamp { top: 50%; left: auto; right: 18px; margin: -15px 0 0; }
+    .step .lamp::before { display: none; }
+    pre.code { white-space: pre-wrap; overflow-wrap: anywhere; font-size: 12.5px; }
+    .list li { font-size: 12.5px; grid-template-columns: 24px 1fr; gap: 10px; }
+    .score { font-size: 54px; }
+    .cards { grid-template-columns: 1fr !important; }
+    .plaque { grid-template-columns: 46px 1fr; padding: 16px 14px; }
+    .hanko { width: 46px; height: 46px; font-size: 15px; }
+    .tool { right: 12px; bottom: calc(12px + env(safe-area-inset-bottom, 0px)); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+    .intro { display: none; }
+  }
+</style>
+</head><body>
+
+<canvas id="embers" aria-hidden="true"></canvas>
+<canvas id="slash" aria-hidden="true"></canvas>
+<canvas id="sparks" aria-hidden="true"></canvas>
+
+<div class="intro" id="intro" aria-hidden="true">
+  <div class="half a"></div><div class="half b"></div>
+  <div class="line"></div>
+  <div class="stage">
+    <p>KASTIL TANPA UJUNG</p>
+    <div style="width:100%;overflow:hidden"><div class="draw-blade" id="introBlade"></div></div>
+    <b>MBP</b>
+  </div>
+  <button class="skip" type="button" id="skipIntro">LEWATI</button>
+</div>
+
+<div class="zan" id="zan" aria-hidden="true">斬</div>
+<div class="tool"><button class="btn" id="soundBtn" type="button" aria-pressed="false">Suara: mati</button></div>
+
+<header class="hero" id="hero">
+  <canvas id="castle" aria-label="Lorong kastil tanpa ujung di bawah bulan merah"></canvas>
+  <div class="hero-shade"></div>
+  <span class="whisper w1">ここから出られない</span>
+  <span class="whisper w2">まだ終わらない</span>
+<div class="hero-sword" id="heroSword"><button type="button" aria-label="Tebas lorong kastil"></button></div>
+  <p class="sword-tip">klik pedangnya untuk menebas lorong</p>
+  <div class="hero-inner">
+    <div class="bar">
+      <div class="seal">MBP</div>
+      <div class="bar-actions">
+        <a class="btn" href="https://github.com/Masbismaa" target="_blank" rel="noopener">GitHub</a>
+        <a class="btn" href="#game-section">Tebas Bug</a>
+      </div>
+    </div>
+    <div class="hero-copy">
+      <span class="floor"><span class="kanji">一階</span>lantai pertama</span>
+      <h1 id="heroName"><span class="l">Mochammad</span><span class="l">Bisma Prasetya</span></h1>
+      <p class="role">Full Stack Developer · Security</p>
+      <p class="meta-line"><span>IT Developer di Spindo</span><span class="open-badge"><i></i>Terbuka kerja remote</span></p>
+      <p class="typed" aria-live="polite"><span id="typed"></span><span class="caret"></span></p>
+      <div class="ctas">
+        <a class="btn red" href="#game-section">Hunus pedang</a>
+        <button class="btn" type="button" id="shiftBtn">Geser ruangan</button>
+      </div>
+    </div>
+    <p class="hint">tebas dengan gerakan cepat, pakai mouse atau swipe. mata di balik shoji mengikutimu</p>
+  </div>
+</header>
+
+<main>
+  <section id="profil" class="reveal">
+    <div class="head">
+      <span class="floor"><span class="kanji">二階</span>profil</span>
+      <h2><span class="cutline">Siapa yang menjaga kastil ini?</span></h2>
+    </div>
+    <div class="profile">
+      <div class="panel about">
+        <p>Aku <b>Bisma</b>, <b>IT Developer di Spindo</b> dengan pengalaman ngoding 3 sampai 5 tahun. Lulusan S1 Informatika yang suka membangun aplikasi dari ujung ke ujung: backend <b>Django</b>, <b>Flask</b>, dan <b>Laravel</b>, frontend web, sampai aplikasi mobile <b>Flutter</b>.</p>
+        <p>Aku juga peduli keamanan. Aplikasi yang aku bangun aku scan dengan <b>OWASP ZAP</b>, dan aku bekali RBAC, audit log, serta login OTP dengan rate limiting.</p>
+        <div><span class="label">sedang dipelajari</span><div class="chips"><span class="chip learn">Docker &amp; cloud</span><span class="chip learn">Penetration testing</span><span class="chip learn">Desain API &amp; microservices</span><span class="chip learn">Integrasi AI / LLM</span></div></div>
+        <div><span class="label">di luar kode</span><div class="chips"><span class="chip">Anime</span><span class="chip">Game</span><span class="chip">Musik</span></div></div>
+      </div>
+      <div>
+        <div class="facts">
+          <div class="panel fact"><b>3–5 th</b><span>ngoding</span></div>
+          <div class="panel fact"><b>S1</b><span>Informatika</span></div>
+          <div class="panel fact"><b>9</b><span>proyek</span></div>
+          <div class="panel fact"><b>2</b><span>sertifikat</span></div>
+        </div>
+        <div class="certs">
+          <div class="panel cert"><div class="hanko">BN</div><div><b>Sertifikasi BNSP</b><small>Badan Nasional Sertifikasi Profesi</small></div></div>
+          <div class="panel cert"><div class="hanko">MS</div><div><b>HTML (Microsoft)</b><small>Sertifikat Microsoft untuk HTML</small></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="perjalanan" class="reveal">
+    <div class="head">
+      <span class="floor"><span class="kanji">三階</span>perjalanan</span>
+      <h2><span class="cutline">Anak tangga yang sudah didaki</span></h2>
+      <p>Dari skripsi sampai aplikasi kantor. Lentera menyala saat kamu menuruni halaman.</p>
+    </div>
+    <div class="timeline" id="timeline">
+      <div class="t-item"><span class="node"></span><div class="panel t-card"><span class="phase">Kuliah</span><h3>S1 Informatika</h3><p>Skripsi berupa aplikasi mobile inventaris untuk toko kelontong, dengan data stok yang tersimpan real-time di cloud.</p><div class="tags"><span>Flutter</span><span>Firestore</span></div></div></div>
+      <div class="t-item"><span class="node"></span><div class="panel t-card"><span class="phase">Proyek web</span><h3>Toko online &amp; sistem informasi</h3><p>Membangun website toko online dan sistem informasi berbasis web untuk mengelola data instansi.</p><div class="tags"><span>Laravel</span><span>MySQL</span></div></div></div>
+      <div class="t-item"><span class="node"></span><div class="panel t-card"><span class="phase">Proyek mobile</span><h3>Aplikasi Flutter</h3><p>Aplikasi kasir, katalog dengan pemesanan, dan pelaporan lapangan yang bisa dipakai langsung dari HP.</p><div class="tags"><span>Flutter</span><span>Dart</span></div></div></div>
+      <div class="t-item"><span class="node"></span><div class="panel t-card"><span class="phase">Sekarang</span><h3>IT Developer di Spindo</h3><p>Membangun aplikasi internal: ALR untuk link akses ICT, inventaris aset IT, dan dashboard laporan untuk manajemen.</p><div class="tags"><span>Django</span><span>Python</span><span>PostgreSQL</span><span>OWASP ZAP</span></div></div></div>
+    </div>
+  </section>
+
+  <section id="rbac" class="reveal">
+    <div class="head">
+      <span class="floor"><span class="kanji">四階</span>proyek unggulan</span>
+      <h2><span class="cutline">Ruangan mana yang boleh dibuka?</span></h2>
+      <p>ALR (Access Link Register) menyimpan link akses ICT di satu tempat. Pilih role, lalu lihat pintu shoji mana yang tertutup, dan siapa yang mengintip dari baliknya. Datanya contoh.</p>
+    </div>
+    <div class="panel sim">
+      <div class="roles" role="group" aria-label="Pilih role">
+        <button class="btn" type="button" data-role="admin" aria-pressed="false">Admin</button>
+        <button class="btn" type="button" data-role="mbp" aria-pressed="true">User Entry: MBP</button>
+        <button class="btn" type="button" data-role="rna" aria-pressed="false">User Entry: RNA</button>
+      </div>
+      <p class="sim-note" id="simNote"></p>
+      <div class="tally"><div><b id="nFull">0</b>CRUD penuh</div><div><b id="nRo">0</b>hanya lihat</div><div><b id="nNone">0</b>tertutup</div></div>
+      <div class="rooms" id="rooms"></div>
+    </div>
+  </section>
+
+  <section id="proyek" class="reveal">
+    <div class="head">
+      <span class="floor"><span class="kanji">五階</span>galeri proyek</span>
+      <h2><span class="cutline">Sembilan ruangan, sembilan proyek</span></h2>
+      <p>Pilih kategori untuk menyaring. Arahkan kursor ke kartu untuk menebasnya.</p>
+    </div>
+    <div class="filters" id="pFilters" role="group" aria-label="Filter proyek"></div>
+    <div class="projects" id="projects"></div>
+  </section>
+
+  <section id="keamanan" class="reveal">
+    <div class="head">
+      <span class="floor"><span class="kanji">六階</span>keamanan</span>
+      <h2><span class="cutline">Empat jurus menjaga aplikasi</span></h2>
+      <p>Keamanan bukan tambahan di akhir. Di kanan ada simulasi scan OWASP ZAP dengan data contoh: jalankan scan, lalu tebas semua temuannya.</p>
+    </div>
+    <div class="sec">
+      <div class="moves">
+        <div class="panel move"><span class="num">壱</span><div><b>Scan dengan OWASP ZAP</b><p>Aplikasi dipindai untuk mencari celah umum sebelum dipakai pengguna.</p></div></div>
+        <div class="panel move"><span class="num">弐</span><div><b>Menutup celah XSS &amp; SQL injection</b><p>Input divalidasi dan di-escape, query memakai parameter, bukan string yang disambung.</p></div></div>
+        <div class="panel move"><span class="num">参</span><div><b>RBAC &amp; audit log</b><p>Setiap role hanya bisa melakukan yang diizinkan, dan setiap perubahan tercatat: siapa, kapan, apa.</p></div></div>
+        <div class="panel move"><span class="num">肆</span><div><b>Login OTP &amp; rate limiting</b><p>Login dua langkah dengan OTP, ditambah batas percobaan agar tidak bisa ditebak berulang-ulang.</p></div></div>
+      </div>
+      <div class="panel scan">
+        <div class="scan-top"><code>zap-baseline -t https://app.contoh.local</code><div class="scan-actions"><button class="btn red" type="button" id="scanBtn">Jalankan scan</button><button class="btn" type="button" id="fixBtn" disabled>Tebas temuan</button></div></div>
+        <div class="meter"><div id="scanMeter"></div></div>
+        <div class="alerts" id="alerts"><div class="scan-empty">Belum ada scan. Tekan "Jalankan scan" untuk memindai aplikasi contoh.</div></div>
+        <p class="scan-note">Simulasi. Target dan temuannya hanya contoh.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="game-section" class="reveal">
+    <div class="head">
+      <span class="floor"><span class="kanji">七階</span>ruang latihan</span>
+      <h2><span class="cutline">Tebas bug sebelum masuk production</span></h2>
+      <p>Kumbang-kumbang bug merayap di kastil. Swipe atau gerakkan mouse dengan cepat melewati mereka. Lentera emas memberi bonus, tapi jangan tebas server merah bertulisan PROD. Di 12 detik terakhir, gerhana merah datang bersama Raja Bug, kumbang raksasa bermahkota.</p>
+    </div>
+    <div class="panel game">
+      <div class="game-top">
+        <div class="hud">
+          <div><b id="gScore">0</b>skor</div>
+          <div class="combo"><b id="gCombo">x1</b>combo</div>
+          <div><b id="gTime">30</b>detik</div>
+          <div><b id="gBest">0</b>rekor</div>
+        </div>
+        <button class="btn red" type="button" id="gStart">Mulai latihan</button>
+      </div>
+      <div class="arena" id="arena">
+        <canvas id="game"></canvas>
+        <div class="overlay" id="gOverlay">
+          <div class="box">
+            <span class="floor"><span class="kanji">稽古</span>latihan tebasan</span>
+            <h3 id="gTitle">Siap menebas?</h3>
+            <p id="gMsg">30 detik. Setiap bug yang ditebas memberi poin, dan combo beruntun melipatgandakannya.</p>
+            <div class="legend"><span class="bug">bug +1</span><span class="gold">lentera emas +5</span><span class="skull">server PROD -10</span><span class="gold">Raja Bug +50</span></div>
+            <button class="btn red" type="button" id="gStart2">Mulai latihan</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="flow" class="reveal">
+    <div class="head">
+      <span class="floor"><span class="kanji">八階</span>cara kerja</span>
+      <h2><span class="cutline">Lima anak tangga, selalu berurutan</span></h2>
+      <p>Pilih satu anak tangga untuk melihat isinya. Lentera di atasnya akan menyala.</p>
+    </div>
+    <div class="stairs" role="tablist" id="stairs"></div>
+    <div class="panel detail" id="detail"></div>
+  </section>
+
+  <section id="test" class="reveal">
+    <div class="head">
+      <span class="floor"><span class="kanji">九階</span>testing</span>
+      <h2><span class="cutline">Satu tebasan, satu test lulus</span></h2>
+      <p>Setiap aturan diuji dari dua sisi: yang harus berhasil dan yang harus ditolak.</p>
+    </div>
+    <div class="tests">
+      <div class="panel list"><ol id="testList"></ol></div>
+      <div class="panel result">
+        <span class="label">hasil pytest</span>
+        <div class="score" id="score">0/7</div>
+        <div class="meter"><div id="meter"></div></div>
+        <div class="stamp" id="stamp">LULUS</div>
+        <button class="btn red" type="button" id="runBtn">Tebas semua test</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="commit" class="reveal">
+    <div class="head">
+      <span class="floor"><span class="kanji">十階</span>conventional commits</span>
+      <h2><span class="cutline">Tulis pesan commit di gulungan</span></h2>
+      <p>Type tanpa scope, deskripsi bahasa Indonesia huruf kecil. Coba ketik sendiri.</p>
+    </div>
+    <div class="builder">
+      <div class="panel">
+        <div><span class="label">type</span><div class="types" id="types"></div></div>
+        <div><label for="desc">deskripsi</label><input type="text" id="desc" value="tambah validasi duplikasi url" maxlength="72" autocomplete="off"></div>
+        <ul class="rules" id="rules"></ul>
+      </div>
+      <div style="display:grid;gap:22px;justify-items:start;padding-top:8px">
+        <div class="scroll" id="preview"></div>
+        <button class="btn red" type="button" id="copyBtn">Salin perintah</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="stack" class="reveal">
+    <div class="head">
+      <span class="floor"><span class="kanji">十一階</span>stack</span>
+      <h2><span class="cutline">Senjata di gudang kastil</span></h2>
+      <p>21 alat, dikelompokkan per fungsi. Arahkan kursor ke papan untuk menebasnya.</p>
+    </div>
+    <div class="filters" id="filters" role="group" aria-label="Filter kategori"></div>
+    <div class="groups" id="groups"></div>
+  </section>
+
+  <footer>
+    <div>
+      <span class="floor"><span class="kanji">最上階</span>lantai teratas</span>
+      <div class="big" style="margin-top:16px">Build slow.<br><span>Test everything.</span></div>
+    </div>
+    <div class="contact">
+      <span class="label">kirim surat</span>
+      <div class="mail"><code id="mailText">moch.bismap@gmail.com</code><button class="btn red" id="mailBtn" type="button">Salin email</button></div>
+      <a href="https://github.com/Masbismaa" target="_blank" rel="noopener">github.com/Masbismaa</a>
+      <a id="igLink" href="#" target="_blank" rel="noopener" hidden></a>
+    </div>
+  </footer>
+</main>
+
+<script>
+(() => {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const $ = id => document.getElementById(id);
+  const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;');
+  const rand = (a, b) => a + Math.random() * (b - a);
+  const store = { get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }, set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} } };
+
+  // ---------- katana svg (original design) ----------
+  const katana = (id) => `<svg class="katana" viewBox="0 0 600 60" aria-hidden="true">
+    <defs>
+      <linearGradient id="bl${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F4F7FA"/><stop offset=".45" stop-color="#C9D1DA"/><stop offset=".55" stop-color="#9AA5B1"/><stop offset="1" stop-color="#E6EBF0"/></linearGradient>
+      <linearGradient id="gl${id}" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".5" stop-color="#fff" stop-opacity=".95"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+      <pattern id="wr${id}" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="14" height="14" fill="#140A0C"/><rect width="7" height="7" fill="#7A1218"/></pattern>
+      <clipPath id="cb${id}"><path d="M176 22 C 330 20, 480 14, 560 16 Q 588 20, 598 30 L 176 36 Z"/></clipPath>
+    </defs>
+    <rect x="4" y="21" width="146" height="18" rx="6" fill="url(#wr${id})" stroke="#2A1414" stroke-width="1.5"/>
+    <rect x="0" y="22" width="10" height="16" rx="3" fill="#2A1A14" stroke="#D9A441" stroke-width="1"/>
+    <ellipse cx="156" cy="30" rx="7" ry="20" fill="#1A1012" stroke="#D9A441" stroke-width="2"/>
+    <rect x="163" y="21" width="14" height="18" rx="2" fill="#D9A441"/>
+    <path d="M176 22 C 330 20, 480 14, 560 16 Q 588 20, 598 30 L 176 36 Z" fill="url(#bl${id})" stroke="#6E7A86" stroke-width=".8"/>
+    <path d="M180 32 C 230 30, 250 33, 290 30 S 360 31, 400 28 S 470 27, 520 25 S 570 25, 592 29" fill="none" stroke="#FFFFFF" stroke-width="1.4" opacity=".7"/>
+    <g clip-path="url(#cb${id})"><rect class="gleam" x="0" y="0" width="80" height="60" fill="url(#gl${id})"/></g>
+  </svg>`;
+  $('heroSword').querySelector('button').innerHTML = katana('h');
+  $('introBlade').innerHTML = katana('i');
+
+  // ---------- sound (synth, off by default) ----------
+  let actx = null, soundOn = false;
+  const ensureAudio = () => { if (!actx) { try { actx = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) {} } return actx; };
+  const swish = (vol = .5) => {
+    if (!soundOn || !ensureAudio()) return;
+    const t = actx.currentTime, len = .28;
+    const buf = actx.createBuffer(1, actx.sampleRate * len, actx.sampleRate), d = buf.getChannelData(0);
+    for (let i = 0; i < d.length; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / d.length);
+    const src = actx.createBufferSource(); src.buffer = buf;
+    const bp = actx.createBiquadFilter(); bp.type = 'bandpass'; bp.Q.value = 1.2; bp.frequency.setValueAtTime(700, t); bp.frequency.exponentialRampToValueAtTime(5200, t + len * .8);
+    const g = actx.createGain(); g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(vol, t + .03); g.gain.exponentialRampToValueAtTime(.001, t + len);
+    src.connect(bp).connect(g).connect(actx.destination); src.start(t);
+  };
+  const clang = (freq = 1800) => {
+    if (!soundOn || !ensureAudio()) return;
+    const t = actx.currentTime;
+    [freq, freq * 1.51, freq * 2.3].forEach((f, i) => {
+      const o = actx.createOscillator(), g = actx.createGain(); o.type = 'sine'; o.frequency.value = f;
+      g.gain.setValueAtTime(.18 / (i + 1), t); g.gain.exponentialRampToValueAtTime(.001, t + .5);
+      o.connect(g).connect(actx.destination); o.start(t); o.stop(t + .55);
+    });
+  };
+  const thud = () => {
+    if (!soundOn || !ensureAudio()) return;
+    const t = actx.currentTime, o = actx.createOscillator(), g = actx.createGain();
+    o.frequency.setValueAtTime(160, t); o.frequency.exponentialRampToValueAtTime(40, t + .3);
+    g.gain.setValueAtTime(.5, t); g.gain.exponentialRampToValueAtTime(.001, t + .35);
+    o.connect(g).connect(actx.destination); o.start(t); o.stop(t + .4);
+  };
+  $('soundBtn').addEventListener('click', () => {
+    soundOn = !soundOn; ensureAudio(); if (actx && actx.state === 'suspended') actx.resume();
+    $('soundBtn').setAttribute('aria-pressed', soundOn); $('soundBtn').textContent = soundOn ? 'Suara: nyala' : 'Suara: mati';
+    if (soundOn) clang(1400);
+  });
+
+  // ---------- sparks ----------
+  const sc = $('sparks'), sk = sc.getContext('2d');
+  let sp = [], sraf = null;
+  const sfit = () => { sc.width = innerWidth; sc.height = innerHeight; };
+  sfit(); addEventListener('resize', sfit);
+  function burstAt(x, y, n = 60, colors = ['255,255,255', '224,72,47', '217,164,65']) {
+    if (reduce) return;
+    for (let i = 0; i < n; i++) { const a = rand(0, Math.PI * 2), v = rand(2, 10); sp.push({ x, y, vx: Math.cos(a) * v, vy: Math.sin(a) * v - 2, life: 0, max: rand(30, 70), c: colors[i % colors.length], r: rand(.8, 2.6) }); }
+    if (!sraf) sloop();
+  }
+  const burst = (el, n) => { const r = el.getBoundingClientRect(); burstAt(r.left + r.width / 2, r.top + r.height / 2, n); };
+  function sloop() {
+    sk.clearRect(0, 0, sc.width, sc.height);
+    sp = sp.filter(p => p.life < p.max);
+    sp.forEach(p => { p.life++; p.vx *= .95; p.vy = p.vy * .95 + .14; p.x += p.vx; p.y += p.vy; sk.strokeStyle = `rgba(${p.c},${1 - p.life / p.max})`; sk.lineWidth = p.r; sk.beginPath(); sk.moveTo(p.x, p.y); sk.lineTo(p.x - p.vx * 1.8, p.y - p.vy * 1.8); sk.stroke(); });
+    sraf = sp.length ? requestAnimationFrame(sloop) : (sk.clearRect(0, 0, sc.width, sc.height), null);
+  }
+
+  // ---------- global slash trail ----------
+  const tc = $('slash'), tk = tc.getContext('2d');
+  const tfit = () => { tc.width = innerWidth * devicePixelRatio; tc.height = innerHeight * devicePixelRatio; tk.setTransform(devicePixelRatio, 0, 0, devicePixelRatio, 0, 0); };
+  tfit(); addEventListener('resize', tfit);
+  let trail = [], lastSwish = 0, traf = null;
+  const bigSlash = [];
+  addEventListener('pointermove', e => {
+    if (reduce) return;
+    const now = performance.now();
+    trail.push({ x: e.clientX, y: e.clientY, t: now });
+    if (trail.length > 2) {
+      const a = trail[trail.length - 3], b = trail[trail.length - 1], v = Math.hypot(b.x - a.x, b.y - a.y) / Math.max(1, b.t - a.t);
+      if (v > 2.2 && now - lastSwish > 260) { lastSwish = now; swish(.35); }
+    }
+    if (!traf) traf = requestAnimationFrame(drawTrail);
+  }, { passive: true });
+  function drawTrail() {
+    const now = performance.now();
+    trail = trail.filter(p => now - p.t < 140);
+    tk.clearRect(0, 0, innerWidth, innerHeight);
+    // fast segments only
+    for (let i = 1; i < trail.length; i++) {
+      const a = trail[i - 1], b = trail[i];
+      const v = Math.hypot(b.x - a.x, b.y - a.y) / Math.max(1, b.t - a.t);
+      if (v < 1.1) continue;
+      const k = i / trail.length, age = 1 - (now - b.t) / 140;
+      tk.lineCap = 'round';
+      tk.strokeStyle = `rgba(224,72,47,${.35 * age})`; tk.lineWidth = 12 * k; tk.beginPath(); tk.moveTo(a.x, a.y); tk.lineTo(b.x, b.y); tk.stroke();
+      tk.strokeStyle = `rgba(255,255,255,${.95 * age})`; tk.lineWidth = 3 * k; tk.beginPath(); tk.moveTo(a.x, a.y); tk.lineTo(b.x, b.y); tk.stroke();
+    }
+    // scripted big slashes
+    for (let i = bigSlash.length - 1; i >= 0; i--) {
+      const s = bigSlash[i], p = (now - s.t0) / s.dur;
+      if (p >= 1.6) { bigSlash.splice(i, 1); continue; }
+      const q = Math.min(1, p), fade = p < 1 ? 1 : 1 - (p - 1) / .6;
+      const x = s.x1 + (s.x2 - s.x1) * q, y = s.y1 + (s.y2 - s.y1) * q;
+      tk.lineCap = 'round';
+      tk.strokeStyle = `rgba(224,72,47,${.45 * fade})`; tk.lineWidth = 26; tk.beginPath(); tk.moveTo(s.x1, s.y1); tk.lineTo(x, y); tk.stroke();
+      tk.strokeStyle = `rgba(255,255,255,${fade})`; tk.lineWidth = 5; tk.beginPath(); tk.moveTo(s.x1, s.y1); tk.lineTo(x, y); tk.stroke();
+    }
+    traf = (trail.length || bigSlash.length) ? requestAnimationFrame(drawTrail) : (tk.clearRect(0, 0, innerWidth, innerHeight), null);
+  }
+  const doBigSlash = (x1, y1, x2, y2, dur = 220) => {
+    if (reduce) return;
+    bigSlash.push({ x1, y1, x2, y2, t0: performance.now(), dur });
+    swish(.7); setTimeout(() => clang(1600), 120);
+    document.body.classList.remove('shake'); void document.body.offsetWidth; document.body.classList.add('shake');
+    setTimeout(() => burstAt(x2, y2, 50), dur);
+    if (!traf) traf = requestAnimationFrame(drawTrail);
+  };
+
+  // ---------- intro ----------
+  const intro = $('intro');
+  const endIntro = () => { intro.classList.add('cut'); setTimeout(() => intro.classList.add('gone'), 1000); };
+  if (reduce) intro.classList.add('gone'); else {
+    const t1 = setTimeout(() => { intro.classList.add('flash'); swish(.8); }, 1450);
+    const t2 = setTimeout(endIntro, 1750);
+    $('skipIntro').addEventListener('click', () => { clearTimeout(t1); clearTimeout(t2); endIntro(); });
+  }
+
+  // ---------- castle ----------
+  const cv = $('castle'), cx = cv.getContext('2d'), hero = $('hero');
+  let W = 0, H = 0;
+  const fit = () => { const d = Math.min(2, devicePixelRatio || 1); W = cv.clientWidth; H = cv.clientHeight; cv.width = W * d; cv.height = H * d; cx.setTransform(d, 0, 0, d, 0, 0); };
+  fit(); addEventListener('resize', fit);
+  const FAR = 2400, NEAR = 60, lanes = [-2, -1, 1, 2];
+  const makeRoom = z => ({
+    x: lanes[Math.floor(Math.random() * 4)] * 330 + rand(-40, 40), y: Math.floor(rand(-2, 3)) * 250 + rand(-30, 30), z,
+    w: rand(200, 300), h: rand(150, 210), panels: 2 + Math.floor(Math.random() * 3),
+    glow: Math.random() < .45, lantern: Math.random() < .35, stair: Math.random() < .3, eyes: Math.random() < .35,
+    blink: rand(0, 6), tx: null, ty: null, rot: Math.random() < .3 ? 1 : 0
+  });
+  let rooms = [];
+  for (let i = 0; i < 38; i++) rooms.push(makeRoom(NEAR + (i / 38) * FAR));
+  let camX = 0, camY = 0, aimX = 0, aimY = 0, boost = 0, flicker = 1, mx = W * .6, my = H * .4, shiftT = 0;
+  hero.addEventListener('pointermove', e => { const r = cv.getBoundingClientRect(); mx = e.clientX - r.left; my = e.clientY - r.top; aimX = (mx / r.width - .5) * 240; aimY = (my / r.height - .5) * 160; });
+  const shift = () => {
+    rooms.forEach(r => { r.tx = lanes[Math.floor(Math.random() * 4)] * 330 + rand(-40, 40); r.ty = Math.floor(rand(-2, 3)) * 250 + rand(-30, 30); });
+    boost = 16; shiftT = performance.now(); thud();
+    hero.classList.remove('flicker'); void hero.offsetWidth; hero.classList.add('flicker');
+  };
+  $('shiftBtn').addEventListener('click', shift);
+  $('heroSword').addEventListener('click', () => {
+    const r = hero.getBoundingClientRect();
+    doBigSlash(r.left + r.width * .95, r.top + r.height * .12, r.left + r.width * .05, r.top + r.height * .82, 260);
+    const z = $('zan'); z.classList.remove('on'); void z.offsetWidth; z.classList.add('on');
+    const h1 = $('heroName'); h1.classList.remove('split'); void h1.offsetWidth; h1.classList.add('split');
+    setTimeout(shift, 180);
+  });
+  const project = (x, y, z) => { const f = 520 / z; return [W * .62 + (x - camX) * f, H * .48 + (y - camY) * f, f]; };
+
+  function drawRoom(r, t) {
+    const [sx, sy, f] = project(r.x, r.y, r.z);
+    const w = r.w * f, h = r.h * f;
+    if (sx + w / 2 < -60 || sx - w / 2 > W + 60 || sy + h < -60 || sy - h > H + 60) return;
+    const fog = Math.max(0, Math.min(1, 1 - (r.z - NEAR) / FAR)), a = Math.pow(fog, 1.3);
+    const x0 = sx - w / 2, y0 = sy - h / 2;
+    cx.globalAlpha = a;
+    cx.fillStyle = '#1E110F'; cx.fillRect(x0, y0, w, h);
+    const pw = w / r.panels, pad = Math.max(1, 5 * f);
+    let darkPanel = null;
+    for (let i = 0; i < r.panels; i++) {
+      const px = x0 + i * pw + pad, py = y0 + h * .16, ph = h * .74, pww = pw - pad * 2;
+      const lit = r.glow ? (i + Math.floor(r.z / 97)) % 3 !== 0 : i === 0;
+      const la = lit ? (0.6 * a + .08) * flicker : 0;
+      cx.fillStyle = lit ? `rgba(236,170,110,${la})` : `rgba(40,14,14,${.85 * a})`;
+      cx.fillRect(px, py, pww, ph);
+      if (!lit && !darkPanel) darkPanel = [px, py, pww, ph];
+      if (w > 60) {
+        cx.strokeStyle = `rgba(20,10,10,${a})`; cx.lineWidth = Math.max(.6, 1.6 * f);
+        cx.beginPath();
+        for (let k = 1; k < 3; k++) { cx.moveTo(px + pww * k / 3, py); cx.lineTo(px + pww * k / 3, py + ph); }
+        for (let k = 1; k < 5; k++) { cx.moveTo(px, py + ph * k / 5); cx.lineTo(px + pww, py + ph * k / 5); }
+        cx.stroke();
+      }
+    }
+    // eyes peeking from a dark panel, tracking the cursor
+    if (r.eyes && darkPanel && a > .35 && w > 70) {
+      const [px, py, pww, ph] = darkPanel;
+      const ex = px + pww / 2, ey = py + ph * .42, gap = Math.max(4, pww * .16), er = Math.max(2, pww * .08);
+      const open = ((t / 1000 + r.blink) % 5) > .18 ? 1 : .12;
+      const dx = Math.max(-1, Math.min(1, (mx - ex) / 300)) * er * .45, dy = Math.max(-1, Math.min(1, (my - ey) / 300)) * er * .3;
+      const g = cx.createRadialGradient(ex, ey, 0, ex, ey, gap * 3);
+      g.addColorStop(0, `rgba(224,40,30,${.35 * a})`); g.addColorStop(1, 'rgba(224,40,30,0)');
+      cx.fillStyle = g; cx.fillRect(ex - gap * 3, ey - gap * 3, gap * 6, gap * 6);
+      [-1, 1].forEach(s => {
+        cx.fillStyle = `rgba(255,70,50,${a})`;
+        cx.beginPath(); cx.ellipse(ex + s * gap, ey, er, er * .55 * open, s * .15, 0, Math.PI * 2); cx.fill();
+        if (open > .5) { cx.fillStyle = `rgba(20,0,0,${a})`; cx.beginPath(); cx.ellipse(ex + s * gap + dx, ey + dy, er * .22, er * .45, 0, 0, Math.PI * 2); cx.fill(); }
+      });
+    }
+    cx.fillStyle = `rgba(142,15,24,${a})`; cx.fillRect(x0 - w * .05, y0, w * 1.1, Math.max(2, h * .09));
+    cx.fillStyle = `rgba(60,34,24,${a})`; cx.fillRect(x0 - w * .08, y0 + h * .92, w * 1.16, Math.max(2, h * .08));
+    cx.fillStyle = `rgba(40,22,16,${a})`; cx.fillRect(x0 - w * .04, y0, Math.max(1.5, w * .04), h); cx.fillRect(x0 + w, y0, Math.max(1.5, w * .04), h);
+    if (r.stair) {
+      const sw = w * .38, sh = h * .12, dir = r.rot ? -1 : 1;
+      for (let s = 0; s < 6; s++) { cx.fillStyle = s % 2 ? `rgba(40,22,16,${a})` : `rgba(66,40,28,${a})`; cx.fillRect(x0 + w * .3 + dir * s * sw * .18, y0 + h + s * sh, sw, sh); }
+    }
+    if (r.lantern) {
+      const lx = x0 + w * .82, ly = y0 + h * .02, lr = Math.max(2, 11 * f), fl = flicker * (.75 + Math.sin(t / 90 + r.blink) * .25);
+      const g = cx.createRadialGradient(lx, ly + lr * 2.4, 0, lx, ly + lr * 2.4, lr * 5);
+      g.addColorStop(0, `rgba(224,72,47,${.5 * a * fl})`); g.addColorStop(1, 'rgba(224,72,47,0)');
+      cx.fillStyle = g; cx.fillRect(lx - lr * 5, ly - lr * 3, lr * 10, lr * 11);
+      cx.fillStyle = `rgba(224,72,47,${a * (.5 + fl * .5)})`; cx.beginPath(); cx.ellipse(lx, ly + lr * 2.4, lr * .9, lr * 1.35, 0, 0, Math.PI * 2); cx.fill();
+    }
+    cx.globalAlpha = 1;
+  }
+
+  const clouds = Array.from({ length: 6 }, () => ({ x: rand(0, 1), y: rand(.05, .35), w: rand(.2, .45), s: rand(.00002, .00006) }));
+  function frame(t) {
+    camX += (aimX - camX) * .04; camY += (aimY - camY) * .04; boost *= .94;
+    if (Math.random() < .004) flicker = .25; flicker += (1 - flicker) * .08;
+    const v = 2 + boost + Math.min(8, scrollY / 120);
+    rooms.forEach(r => {
+      r.z -= reduce ? 0 : v;
+      if (r.tx !== null) { r.x += (r.tx - r.x) * .07; r.y += (r.ty - r.y) * .07; if (Math.abs(r.tx - r.x) < .5) r.tx = r.ty = null; }
+      if (r.z < NEAR) Object.assign(r, makeRoom(r.z + FAR));
+    });
+    const g = cx.createRadialGradient(W * .62, H * .48, 0, W * .62, H * .48, Math.max(W, H) * .8);
+    g.addColorStop(0, '#2A0F16'); g.addColorStop(1, '#09060D');
+    cx.fillStyle = g; cx.fillRect(0, 0, W, H);
+    // blood moon
+    const mX = W * .78 - camX * .15, mY = H * .2 - camY * .1, mR = Math.min(W, H) * .16, pulse = 1 + Math.sin(t / 1400) * .03;
+    const mg = cx.createRadialGradient(mX, mY, mR * .2, mX, mY, mR * 2.6 * pulse);
+    mg.addColorStop(0, 'rgba(200,30,30,.55)'); mg.addColorStop(.4, 'rgba(142,15,24,.25)'); mg.addColorStop(1, 'rgba(142,15,24,0)');
+    cx.fillStyle = mg; cx.fillRect(0, 0, W, H);
+    const mf = cx.createRadialGradient(mX - mR * .3, mY - mR * .3, mR * .1, mX, mY, mR);
+    mf.addColorStop(0, '#E0482F'); mf.addColorStop(1, '#7A0E14');
+    cx.fillStyle = mf; cx.beginPath(); cx.arc(mX, mY, mR, 0, Math.PI * 2); cx.fill();
+    clouds.forEach(c => {
+      const cxp = ((c.x + t * c.s) % 1.4 - .2) * W;
+      cx.fillStyle = 'rgba(9,6,13,.75)'; cx.beginPath(); cx.ellipse(cxp, c.y * H, c.w * W * .5, 16, 0, 0, Math.PI * 2); cx.fill();
+    });
+    cx.strokeStyle = 'rgba(179,38,46,.06)'; cx.lineWidth = 1; cx.beginPath();
+    for (let i = 0; i < 16; i++) { const ang = i / 16 * Math.PI * 2; cx.moveTo(W * .62 - camX * .3, H * .48 - camY * .3); cx.lineTo(W * .62 + Math.cos(ang) * W, H * .48 + Math.sin(ang) * W); }
+    cx.stroke();
+    rooms.sort((a, b) => b.z - a.z).forEach(r => drawRoom(r, t));
+    // fog at the bottom
+    const fg = cx.createLinearGradient(0, H * .7, 0, H);
+    fg.addColorStop(0, 'rgba(9,6,13,0)'); fg.addColorStop(1, 'rgba(60,10,16,.35)');
+    cx.fillStyle = fg; cx.fillRect(0, H * .7, W, H * .3);
+    if (!reduce) requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+
+  // ---------- embers ----------
+  const ec = $('embers'), ex = ec.getContext('2d');
+  const efit = () => { ec.width = innerWidth; ec.height = innerHeight; };
+  efit(); addEventListener('resize', efit);
+  const embers = Array.from({ length: 55 }, () => ({ x: rand(0, innerWidth), y: rand(0, innerHeight), r: rand(.6, 2.4), vy: rand(.2, .9), vx: rand(-.2, .2), p: rand(0, 6) }));
+  (function eloop() {
+    if (reduce) return;
+    ex.clearRect(0, 0, ec.width, ec.height);
+    embers.forEach(e => {
+      e.y -= e.vy; e.x += e.vx + Math.sin((e.y + e.p * 50) / 60) * .3; e.p += .02;
+      if (e.y < -10) { e.y = ec.height + 10; e.x = rand(0, ec.width); }
+      ex.fillStyle = `rgba(${e.r > 1.7 ? '224,72,47' : '217,164,65'},${.35 + Math.sin(e.p * 3) * .25})`;
+      ex.beginPath(); ex.arc(e.x, e.y, e.r, 0, 7); ex.fill();
+    });
+    requestAnimationFrame(eloop);
+  })();
+
+  // ---------- typed ----------
+  const lines = ['3-5 tahun ngoding, masih lapar belajar', 'django, flask, laravel, flutter', 'scan keamanan pakai OWASP ZAP', 'setiap bug akan ditebas', 'sedang belajar docker, pentest, dan AI'];
+  const typed = $('typed');
+  if (reduce) typed.textContent = lines[0]; else {
+    let li = 0, ci = 0, back = false;
+    const tick = () => {
+      const s = lines[li]; typed.textContent = s.slice(0, ci);
+      if (!back && ci < s.length) { ci++; setTimeout(tick, 45); } else if (!back) { back = true; setTimeout(tick, 1900); }
+      else if (ci > 0) { ci--; setTimeout(tick, 18); } else { back = false; li = (li + 1) % lines.length; setTimeout(tick, 350); }
+    };
+    setTimeout(tick, 1900);
+  }
+
+  // ---------- slash game ----------
+  const gc = $('game'), gx = gc.getContext('2d'), arena = $('arena');
+  let GW = 0, GH = 0;
+  const gfit = () => { const d = Math.min(2, devicePixelRatio || 1); GW = arena.clientWidth; GH = arena.clientHeight; gc.width = GW * d; gc.height = GH * d; gx.setTransform(d, 0, 0, d, 0, 0); };
+  gfit(); addEventListener('resize', gfit);
+  const BUGS = ['XSS', 'SQL Injection', 'NullPointer', '404', 'Race Condition', 'Memory Leak', 'CSRF', 'Off-by-one', 'Deadlock', 'Typo', 'N+1 Query', 'Undefined'];
+  let spirits = [], halves = [], pops = [], gTrail = [], gState = 'idle', score = 0, combo = 1, lastHit = 0, timeLeft = 30, spawnT = 0, lastT = 0, boss = null, bossDone = false, bossBanner = 0;
+  let best = +(store.get('mbp-slash-best') || 0); $('gBest').textContent = best;
+  const spawn = () => {
+    const r = Math.random(), type = r < .1 ? 'gold' : r < .22 ? 'skull' : 'bug';
+    const fromLeft = Math.random() < .5, y = rand(GH * .2, GH * .85);
+    spirits.push({ type, label: type === 'bug' ? BUGS[Math.floor(Math.random() * BUGS.length)] : type === 'gold' ? '+5' : 'PROD', x: fromLeft ? -40 : GW + 40, y, vx: (fromLeft ? 1 : -1) * rand(1.2, 2.6) * (GW / 900 + .4), vy: rand(-.6, .3), r: type === 'gold' ? 18 : type === 'skull' ? 21 : 24, ph: rand(0, 6) });
+  };
+  // beetle drawn facing +x in local space; legs and antennae wiggle while walking
+  const beetle = (r, t, ph, shell, edge, eye, spots) => {
+    gx.lineCap = 'round';
+    gx.strokeStyle = edge; gx.lineWidth = Math.max(1.6, r * .09);
+    for (let i = 0; i < 3; i++) {
+      const bx = r * (.45 - i * .38), sw = Math.sin(t / 55 + ph + i * 2.1) * r * .22 * (i % 2 ? -1 : 1);
+      [-1, 1].forEach(side => {
+        gx.beginPath(); gx.moveTo(bx, side * r * .3);
+        gx.lineTo(bx + sw * side, side * r * .95);
+        gx.lineTo(bx + sw * side - r * .25, side * r * 1.2);
+        gx.stroke();
+      });
+    }
+    gx.lineWidth = Math.max(1.2, r * .06);
+    [-1, 1].forEach(side => {
+      const w = Math.sin(t / 90 + ph + side) * r * .15;
+      gx.beginPath(); gx.moveTo(r * .9, side * r * .12);
+      gx.quadraticCurveTo(r * 1.35, side * r * .25 + w, r * 1.55, side * r * .55 + w); gx.stroke();
+    });
+    gx.fillStyle = shell; gx.strokeStyle = edge; gx.lineWidth = Math.max(1.4, r * .07);
+    gx.beginPath(); gx.ellipse(-r * .3, 0, r * .8, r * .6, 0, 0, Math.PI * 2); gx.fill(); gx.stroke();
+    gx.beginPath(); gx.moveTo(r * .45, 0); gx.lineTo(-r * 1.08, 0); gx.stroke();
+    gx.beginPath(); gx.ellipse(r * .45, 0, r * .3, r * .38, 0, 0, Math.PI * 2); gx.fill(); gx.stroke();
+    gx.beginPath(); gx.arc(r * .82, 0, r * .22, 0, Math.PI * 2); gx.fill(); gx.stroke();
+    gx.fillStyle = eye; gx.shadowColor = eye; gx.shadowBlur = 8;
+    gx.beginPath(); gx.arc(r * .92, -r * .1, r * .07, 0, 7); gx.arc(r * .92, r * .1, r * .07, 0, 7); gx.fill();
+    gx.shadowBlur = 0;
+    if (spots) { gx.fillStyle = edge; [[-.5, -.28], [-.5, .28], [-.05, -.3], [-.05, .3]].forEach(([sx, sy]) => { gx.beginPath(); gx.arc(r * sx, r * sy, r * .09, 0, 7); gx.fill(); }); }
+  };
+  const drawSprite = (s, t, noLabel) => {
+    const x = s.x, y = s.y + Math.sin(t / 240 + s.ph) * 3;
+    const col = s.type === 'gold' ? '217,164,65' : s.type === 'skull' ? '224,72,47' : '120,220,255';
+    const g = gx.createRadialGradient(x, y, 0, x, y, s.r * 2.4); g.addColorStop(0, `rgba(${col},.32)`); g.addColorStop(1, `rgba(${col},0)`);
+    gx.fillStyle = g; gx.fillRect(x - s.r * 3, y - s.r * 3, s.r * 6, s.r * 6);
+    if (s.type === 'gold') {
+      gx.fillStyle = '#E0482F'; gx.strokeStyle = '#D9A441'; gx.lineWidth = 2;
+      gx.beginPath(); gx.ellipse(x, y, s.r * .75, s.r, 0, 0, Math.PI * 2); gx.fill(); gx.stroke();
+      gx.beginPath(); gx.moveTo(x - s.r * .75, y); gx.lineTo(x + s.r * .75, y); gx.stroke();
+      gx.fillStyle = '#D9A441'; gx.fillRect(x - s.r * .5, y - s.r - 4, s.r, 4); gx.fillRect(x - s.r * .4, y + s.r, s.r * .8, 4);
+    } else if (s.type === 'skull') {
+      // production server rack with blinking red lights
+      const w = s.r * 1.5, h = s.r * 1.9;
+      gx.fillStyle = '#1B0C10'; gx.strokeStyle = '#E0482F'; gx.lineWidth = 2;
+      gx.beginPath(); gx.roundRect ? gx.roundRect(x - w / 2, y - h / 2, w, h, 4) : gx.rect(x - w / 2, y - h / 2, w, h); gx.fill(); gx.stroke();
+      for (let i = 0; i < 3; i++) {
+        const yy = y - h / 2 + h * (.2 + i * .28);
+        gx.strokeStyle = 'rgba(224,72,47,.5)'; gx.lineWidth = 1; gx.beginPath(); gx.moveTo(x - w / 2 + 4, yy + h * .12); gx.lineTo(x + w / 2 - 4, yy + h * .12); gx.stroke();
+        const on = Math.floor(t / 180 + i + s.ph) % 2 === 0;
+        gx.fillStyle = on ? '#FF3B2A' : '#4A0C0C'; gx.shadowColor = '#FF3B2A'; gx.shadowBlur = on ? 8 : 0;
+        gx.beginPath(); gx.arc(x + w / 2 - 8, yy, 2.6, 0, 7); gx.fill(); gx.shadowBlur = 0;
+        gx.fillStyle = 'rgba(224,72,47,.35)'; gx.fillRect(x - w / 2 + 5, yy - 2, w * .45, 4);
+      }
+    } else {
+      gx.save(); gx.translate(x, y); gx.rotate(Math.atan2(s.vy, s.vx));
+      beetle(s.r, t, s.ph, '#123A44', '#9DE3FF', '#FF4A3A', true);
+      gx.restore();
+    }
+    if (noLabel) return;
+    gx.font = '700 12px "JetBrains Mono", monospace'; gx.textAlign = 'center';
+    gx.fillStyle = s.type === 'skull' ? '#FF8A70' : s.type === 'gold' ? '#F1D08A' : '#CFF2FF';
+    gx.fillText(s.label, x, y - s.r * 1.3 - 8);
+  };
+  const drawBoss = (b, t) => {
+    const x = b.x, y = b.y, r = b.r, hurt = t - b.hitT < 120;
+    const g = gx.createRadialGradient(x, y, 0, x, y, r * 2.6); g.addColorStop(0, 'rgba(224,40,30,.5)'); g.addColorStop(1, 'rgba(224,40,30,0)');
+    gx.fillStyle = g; gx.fillRect(x - r * 3, y - r * 3, r * 6, r * 6);
+    gx.save(); gx.translate(x, y); gx.rotate(b.ang || Math.PI);
+    // mandibles
+    gx.strokeStyle = hurt ? '#fff' : '#D9A441'; gx.lineWidth = r * .1; gx.lineCap = 'round';
+    const snap = Math.sin(t / 120) * .25;
+    [-1, 1].forEach(side => { gx.beginPath(); gx.moveTo(r * .95, side * r * .15); gx.quadraticCurveTo(r * 1.45, side * r * (.5 + snap), r * 1.55, side * r * (.05 + snap * .3)); gx.stroke(); });
+    beetle(r, t, 0, hurt ? '#FFFFFF' : '#3A0A10', hurt ? '#FFFFFF' : '#E0482F', '#FFD27A', false);
+    // crown on the thorax
+    gx.fillStyle = '#D9A441';
+    gx.beginPath(); gx.moveTo(r * .2, -r * .32); gx.lineTo(r * .05, -r * .62); gx.lineTo(r * .3, -r * .45); gx.lineTo(r * .45, -r * .72); gx.lineTo(r * .6, -r * .45); gx.lineTo(r * .85, -r * .62); gx.lineTo(r * .7, -r * .32); gx.closePath(); gx.fill();
+    gx.restore();
+    const bw = r * 2.2; gx.fillStyle = 'rgba(0,0,0,.6)'; gx.fillRect(x - bw / 2, y - r * 1.75, bw, 8);
+    gx.fillStyle = '#E0482F'; gx.fillRect(x - bw / 2, y - r * 1.75, bw * b.hp / b.max, 8);
+    gx.font = '800 14px "Shippori Mincho B1", serif'; gx.textAlign = 'center'; gx.fillStyle = '#FFD27A'; gx.fillText('RAJA BUG', x, y - r * 1.9);
+  };
+  const segHit = (ax, ay, bx, by, cx0, cy0, r) => {
+    const dx = bx - ax, dy = by - ay, l2 = dx * dx + dy * dy || 1;
+    const t = Math.max(0, Math.min(1, ((cx0 - ax) * dx + (cy0 - ay) * dy) / l2));
+    return Math.hypot(ax + t * dx - cx0, ay + t * dy - cy0) < r;
+  };
+  const toLocal = e => { const r = gc.getBoundingClientRect(); return { x: e.clientX - r.left, y: e.clientY - r.top, t: performance.now() }; };
+  gc.addEventListener('pointerdown', e => { gc.setPointerCapture?.(e.pointerId); gTrail = [toLocal(e)]; });
+  gc.addEventListener('pointermove', e => {
+    const p = toLocal(e); gTrail.push(p);
+    if (gTrail.length > 12) gTrail.shift();
+    if (gState !== 'play' || gTrail.length < 2) return;
+    const a = gTrail[gTrail.length - 2], v = Math.hypot(p.x - a.x, p.y - a.y) / Math.max(1, p.t - a.t);
+    if (v < .6) return;
+    const t = performance.now();
+    if (boss && t - boss.hitT > 130 && segHit(a.x, a.y, p.x, p.y, boss.x, boss.y, boss.r * 1.1)) {
+      boss.hp--; boss.hitT = t; clang(900 + boss.hp * 60); thud();
+      const r0 = gc.getBoundingClientRect(); burstAt(r0.left + boss.x, r0.top + boss.y, 30, ['255,255,255', '224,72,47', '120,0,0']);
+      pops.push({ x: boss.x + rand(-30, 30), y: boss.y - boss.r, txt: 'HIT', c: '#FFD27A', life: 0 });
+      if (boss.hp <= 0) {
+        score += 50; bossDone = true;
+        pops.push({ x: boss.x, y: boss.y, txt: '+50', c: '#FFD27A', life: 0 });
+        const ang = Math.atan2(p.y - a.y, p.x - a.x);
+        burstAt(r0.left + boss.x, r0.top + boss.y, 140, ['255,255,255', '224,72,47', '217,164,65']);
+        document.body.classList.remove('shake'); void document.body.offsetWidth; document.body.classList.add('shake');
+        const z = $('zan'); z.classList.remove('on'); void z.offsetWidth; z.classList.add('on');
+        boss = null;
+      }
+      $('gScore').textContent = score;
+    }
+    for (let i = spirits.length - 1; i >= 0; i--) {
+      const s = spirits[i], wob = Math.sin(t / 240 + s.ph) * 3;
+      if (!segHit(a.x, a.y, p.x, p.y, s.x, s.y + wob, s.r + 8)) continue;
+      spirits.splice(i, 1);
+      const ang = Math.atan2(p.y - a.y, p.x - a.x);
+      if (s.type === 'skull') { score = Math.max(0, score - 10); combo = 1; thud(); document.body.classList.remove('shake'); void document.body.offsetWidth; document.body.classList.add('shake'); pops.push({ x: s.x, y: s.y, txt: '-10', c: '#FF6A50', life: 0 }); }
+      else {
+        combo = t - lastHit < 700 ? Math.min(8, combo + 1) : 1; lastHit = t;
+        const gain = (s.type === 'gold' ? 5 : 1) * combo; score += gain; clang(s.type === 'gold' ? 2200 : 1500 + combo * 80);
+        pops.push({ x: s.x, y: s.y, txt: '+' + gain, c: s.type === 'gold' ? '#F1D08A' : '#FFFFFF', life: 0 });
+      }
+      [-1, 1].forEach(side => halves.push({ ...s, side, ang, vx: s.vx * .3 + Math.cos(ang + side * Math.PI / 2) * 3, vy: Math.sin(ang + side * Math.PI / 2) * 3 - 2, rot: 0, vr: side * .08, life: 0 }));
+      const r = gc.getBoundingClientRect(); burstAt(r.left + s.x, r.top + s.y, 36, s.type === 'skull' ? ['224,72,47', '120,0,0'] : s.type === 'gold' ? ['217,164,65', '255,255,255'] : ['157,227,255', '255,255,255']);
+      $('gScore').textContent = score; $('gCombo').textContent = 'x' + combo;
+    }
+  });
+  const drawHalf = (h, t) => {
+    gx.save(); gx.translate(h.x, h.y); gx.rotate(h.ang); gx.rotate(h.rot);
+    gx.beginPath(); gx.rect(-60, h.side < 0 ? -60 : 0, 120, 60); gx.clip();
+    gx.rotate(-h.ang - h.rot); gx.globalAlpha = Math.max(0, 1 - h.life / 50);
+    drawSprite({ ...h, x: 0, y: 0 }, t, true);
+    gx.restore();
+  };
+  const ranks = [[0, 'Murid Baru'], [15, 'Penjaga Kode'], [35, 'Pemburu Bug'], [60, 'Pendekar Debug'], [100, 'Master Tebasan']];
+  const startGame = () => {
+    gState = 'play'; score = 0; combo = 1; timeLeft = 30; spirits = []; halves = []; pops = []; spawnT = 0; lastT = performance.now(); boss = null; bossDone = false; bossBanner = 0;
+    $('gScore').textContent = 0; $('gCombo').textContent = 'x1'; $('gTime').textContent = 30;
+    $('gOverlay').classList.add('hide'); $('gStart').textContent = 'Ulangi';
+    ensureAudio(); if (actx && actx.state === 'suspended') actx.resume();
+    clang(1200);
+  };
+  const endGame = () => {
+    gState = 'over';
+    if (score > best) { best = score; store.set('mbp-slash-best', best); $('gBest').textContent = best; }
+    const rank = ranks.filter(r => score >= r[0]).pop()[1];
+    $('gTitle').textContent = `Skor ${score}`;
+    const bossLine = bossDone ? 'Raja Bug berhasil kamu tumbangkan.' : 'Raja Bug kabur ke production. Tebas lebih cepat!';
+    boss = null;
+    $('gMsg').innerHTML = `Gelar: <span class="rank">${rank}</span><br>${bossLine}<br>Rekor terbaikmu ${best}.`;
+    $('gStart2').textContent = 'Latihan lagi';
+    $('gOverlay').classList.remove('hide');
+    burst($('gStart2'), 60);
+  };
+  $('gStart').addEventListener('click', startGame); $('gStart2').addEventListener('click', startGame);
+  function gloop(t) {
+    const dt = Math.min(50, t - (lastT || t)); lastT = t;
+    gx.clearRect(0, 0, GW, GH);
+    const bg = gx.createLinearGradient(0, 0, 0, GH); bg.addColorStop(0, '#12090E'); bg.addColorStop(1, '#1E0C10');
+    gx.fillStyle = bg; gx.fillRect(0, 0, GW, GH);
+    gx.strokeStyle = 'rgba(179,38,46,.08)'; gx.lineWidth = 1;
+    for (let x = 0; x < GW; x += 46) { gx.beginPath(); gx.moveTo(x, 0); gx.lineTo(x, GH); gx.stroke(); }
+    for (let y = 0; y < GH; y += 60) { gx.beginPath(); gx.moveTo(0, y); gx.lineTo(GW, y); gx.stroke(); }
+    if (gState === 'play') {
+      timeLeft -= dt / 1000; spawnT -= dt;
+      if (spawnT <= 0) { spawn(); spawnT = Math.max(260, 900 - (30 - timeLeft) * 18); }
+      $('gTime').textContent = Math.max(0, Math.ceil(timeLeft));
+      if (t - lastHit > 1200 && combo > 1) { combo = 1; $('gCombo').textContent = 'x1'; }
+      if (!boss && !bossDone && timeLeft <= 12) { boss = { x: GW + 90, y: GH * .5, r: Math.min(64, GW * .09 + 20), hp: 8, max: 8, hitT: 0 }; bossBanner = t; thud(); document.body.classList.remove('shake'); void document.body.offsetWidth; document.body.classList.add('shake'); }
+      if (boss) { const tx = GW * .62 + Math.sin(t / 900) * GW * .22, ty = GH * .5 + Math.cos(t / 700) * GH * .2; const nx = boss.x + (tx - boss.x) * .03, ny = boss.y + (ty - boss.y) * .03; if (Math.hypot(nx - boss.x, ny - boss.y) > .2) boss.ang = Math.atan2(ny - boss.y, nx - boss.x); boss.x = nx; boss.y = ny; }
+      if (timeLeft <= 0) endGame();
+    } else if (gState === 'idle' && spirits.length < 5 && Math.random() < .02) spawn();
+    spirits.forEach(s => { s.x += s.vx * dt / 16; s.y += s.vy * dt / 16; });
+    spirits = spirits.filter(s => s.x > -80 && s.x < GW + 80);
+    if (boss) {
+      const pulse = .18 + Math.sin(t / 300) * .06;
+      gx.fillStyle = `rgba(142,15,24,${pulse})`; gx.fillRect(0, 0, GW, GH);
+      const mx0 = GW * .88, my0 = GH * .18, mr = Math.min(GW, GH) * .1;
+      gx.fillStyle = '#B3262E'; gx.beginPath(); gx.arc(mx0, my0, mr, 0, 7); gx.fill();
+      gx.fillStyle = '#12090E'; gx.beginPath(); gx.arc(mx0 - mr * .35, my0 - mr * .1, mr * .92, 0, 7); gx.fill();
+    }
+    spirits.forEach(s => drawSprite(s, t));
+    if (boss) drawBoss(boss, t);
+    if (bossBanner && t - bossBanner < 1800) {
+      const k = (t - bossBanner) / 1800; gx.globalAlpha = k < .15 ? k / .15 : 1 - (k - .15) / .85;
+      gx.font = '800 clamp(20px, 4vw, 34px) "Shippori Mincho B1", serif'; gx.font = `800 ${Math.max(22, Math.min(38, GW * .045))}px "Shippori Mincho B1", serif`;
+      gx.textAlign = 'center'; gx.fillStyle = '#FF6A50'; gx.fillText('GERHANA MERAH: RAJA BUG MUNCUL', GW / 2, GH * .14); gx.globalAlpha = 1;
+    }
+    halves.forEach(h => { h.life++; h.x += h.vx; h.y += h.vy; h.vy += .25; h.rot += h.vr; drawHalf(h, t); });
+    halves = halves.filter(h => h.life < 50);
+    pops.forEach(p => { p.life++; gx.globalAlpha = 1 - p.life / 45; gx.fillStyle = p.c; gx.font = '800 22px "Shippori Mincho B1", serif'; gx.textAlign = 'center'; gx.fillText(p.txt, p.x, p.y - p.life * .8); gx.globalAlpha = 1; });
+    pops = pops.filter(p => p.life < 45);
+    const now = performance.now(); gTrail = gTrail.filter(p => now - p.t < 150);
+    for (let i = 1; i < gTrail.length; i++) {
+      const a = gTrail[i - 1], b = gTrail[i], k = i / gTrail.length;
+      gx.lineCap = 'round';
+      gx.strokeStyle = `rgba(224,72,47,${.4 * k})`; gx.lineWidth = 14 * k; gx.beginPath(); gx.moveTo(a.x, a.y); gx.lineTo(b.x, b.y); gx.stroke();
+      gx.strokeStyle = `rgba(255,255,255,${k})`; gx.lineWidth = 3.5 * k; gx.beginPath(); gx.moveTo(a.x, a.y); gx.lineTo(b.x, b.y); gx.stroke();
+    }
+    requestAnimationFrame(gloop);
+  }
+  requestAnimationFrame(gloop);
+
+  // ---------- RBAC ----------
+  const data = [
+    { t: 'Portal HRIS', c: 'WEB', cc: 't-web', o: 'MBP', v: 'Public' },
+    { t: 'Core Switch L3', c: 'NETWORK', cc: 't-net', o: 'MBP', v: 'Private' },
+    { t: 'SAP GUI Prod', c: 'APPLICATION', cc: 't-app', o: 'RNA', v: 'Public' },
+    { t: 'Firewall Cabang', c: 'NETWORK', cc: 't-net', o: 'RNA', v: 'Private' },
+    { t: 'Panduan VPN', c: 'GENERAL', cc: 't-gen', o: 'MBP', v: 'Public' },
+    { t: 'CCTV Gudang', c: 'WEB', cc: 't-web', o: 'DWI', v: 'Public' }
+  ];
+  const notes = {
+    admin: '<b>Admin</b> bisa CRUD semua data Public milik siapa pun. Ruangan Private tetap tertutup, dan ada yang menjaganya.',
+    mbp: '<b>User Entry (MBP)</b> bisa CRUD data sendiri, Public maupun Private. Data Public orang lain hanya bisa dilihat dan disalin.',
+    rna: '<b>User Entry (RNA)</b> punya aturan yang sama dari sisi RNA, jadi ruangan Private milik MBP ikut tertutup.'
+  };
+  const label = { full: 'EDIT & HAPUS', ro: 'LIHAT & SALIN', none: 'TERTUTUP' };
+  const access = (role, r) => role === 'admin' ? (r.v === 'Public' ? 'full' : 'none') : r.o === (role === 'mbp' ? 'MBP' : 'RNA') ? 'full' : r.v === 'Public' ? 'ro' : 'none';
+  $('rooms').innerHTML = data.map(r => `<div class="room"><span class="t">${r.t}</span><span><span class="tag ${r.cc}">${r.c}</span></span><span class="m"><i>pemilik </i>${r.o}</span><span class="m"><i>visibility </i>${r.v}</span><span class="acc"></span><div class="shut l"></div><div class="shut r"></div><div class="eyes"><i></i><i></i></div><span class="whisper-label">JANGAN MASUK</span></div>`).join('');
+  const count = (el, to) => { const from = +el.dataset.v || 0; el.dataset.v = to; if (reduce) return el.textContent = to; const t0 = performance.now(); const f = t => { const p = Math.min(1, (t - t0) / 500); el.textContent = Math.round(from + (to - from) * p); if (p < 1) requestAnimationFrame(f); }; requestAnimationFrame(f); };
+  const setRole = (role, fx) => {
+    document.querySelectorAll('[data-role]').forEach(b => b.setAttribute('aria-pressed', b.dataset.role === role));
+    $('simNote').innerHTML = notes[role];
+    const n = { full: 0, ro: 0, none: 0 };
+    document.querySelectorAll('.room').forEach((el, i) => {
+      const a = access(role, data[i]); n[a]++;
+      setTimeout(() => {
+        const was = el.classList.contains('closed');
+        el.classList.toggle('closed', a === 'none');
+        if (fx && a === 'none' && !was) thud();
+        const acc = el.querySelector('.acc'); acc.className = 'acc ' + a; acc.textContent = label[a];
+      }, reduce ? 0 : i * 90);
+    });
+    count($('nFull'), n.full); count($('nRo'), n.ro); count($('nNone'), n.none);
+  };
+  document.querySelectorAll('[data-role]').forEach(b => b.addEventListener('click', () => setRole(b.dataset.role, true)));
+  setRole('mbp');
+
+  // ---------- stairs ----------
+  const steps = [
+    { k: '壱', t: 'Requirement', h: 'Baca requirement', p: 'Tugas dikaitkan ke nomor SR yang relevan. Tujuannya jelas dulu sebelum menulis kode.', code: 'SR-06  validasi format url (http/https)\nSR-06  deteksi duplikasi url/address/port\nSR-07  ekstensi jpg/png/pdf, max 10MB' },
+    { k: '弐', t: 'Schema', h: 'Rancang schema', p: 'Tabel snake_case plural, model PascalCase singular, primary key id, foreign key nama_entitas_id.', code: 'class AccessEntry(models.Model):\n    category = models.ForeignKey(Category, on_delete=models.PROTECT)\n    title = models.CharField(max_length=150)\n    is_active = models.BooleanField(default=True)' },
+    { k: '参', t: 'Logika', h: 'Logika bisnis & RBAC', p: 'Validasi dan aturan akses ditaruh di services, bukan di routes. Satu fungsi, satu tugas.', code: 'def can_edit_entry(user, entry) -> bool:\n    if user.role == "admin":\n        return entry.visibility == "public"\n    return entry.created_by_id == user.id' },
+    { k: '肆', t: 'Testing', h: 'Tulis test', p: 'Setiap aturan punya skenario positive dan negative.', code: 'def test_admin_cannot_edit_private_entry():\n    entry = make_entry(visibility="private")\n    assert not can_edit_entry(admin_user, entry)' },
+    { k: '伍', t: 'Commit', h: 'Commit per milestone', p: 'Satu milestone selesai, satu commit, pakai Conventional Commits.', code: 'git add .\ngit commit -m "feat: tambah validasi duplikasi url"\ngit push origin feature/validasi-url' }
+  ];
+  const stairs = $('stairs');
+  stairs.innerHTML = steps.map((s, i) => `<button class="step" type="button" role="tab" style="--i:${i}"><span class="lamp"></span><span class="k">${s.k}</span><span class="n">${s.t}</span></button>`).join('');
+  const setStep = (i, fx) => {
+    stairs.querySelectorAll('.step').forEach((b, j) => { b.setAttribute('aria-selected', i === j); b.classList.toggle('lit', j < i); });
+    const s = steps[i], d = $('detail');
+    d.innerHTML = `<div><span class="floor">langkah ${i + 1} dari 5</span><h3>${s.h}</h3><p>${s.p}</p></div><pre class="code">${esc(s.code)}</pre>`;
+    d.classList.remove('fadein'); void d.offsetWidth; d.classList.add('fadein');
+    if (fx) { swish(.4); burst(stairs.children[i], 24); }
+  };
+  stairs.querySelectorAll('.step').forEach((b, i) => b.addEventListener('click', () => setStep(i, true)));
+  setStep(0);
+
+  // ---------- tests ----------
+  const tests = ['test_login_email_korporat_valid', 'test_otp_kadaluarsa_ditolak', 'test_admin_tidak_lihat_data_private', 'test_user_entry_readonly_public_orang_lain', 'test_url_tanpa_http_ditolak', 'test_duplikasi_url_terdeteksi', 'test_audit_log_tidak_bisa_diubah'];
+  $('testList').innerHTML = tests.map(t => `<li><span class="lan"></span><span>${t}</span></li>`).join('');
+  let running = false;
+  $('runBtn').addEventListener('click', async () => {
+    if (running) return; running = true;
+    const btn = $('runBtn'); btn.disabled = true;
+    const wait = ms => new Promise(r => setTimeout(r, reduce ? 0 : ms));
+    const lis = document.querySelectorAll('#testList li');
+    lis.forEach(li => li.classList.remove('lit', 'slashed')); $('stamp').classList.remove('on'); $('meter').style.width = '0'; $('score').textContent = `0/${tests.length}`;
+    await wait(250);
+    for (let i = 0; i < lis.length; i++) {
+      await wait(260 + Math.random() * 220);
+      lis[i].classList.add('slashed', 'lit'); swish(.35);
+      const r = lis[i].getBoundingClientRect(); burstAt(r.right - 20, r.top + r.height / 2, 14);
+      $('score').textContent = `${i + 1}/${tests.length}`;
+      $('meter').style.width = ((i + 1) / tests.length * 100) + '%';
+    }
+    await wait(250);
+    $('stamp').classList.add('on'); clang(1200); burst($('stamp'), 80);
+    running = false; btn.disabled = false; btn.textContent = 'Tebas lagi';
+  });
+
+  // ---------- commit ----------
+  const types = ['feat', 'fix', 'docs', 'test', 'refactor', 'style', 'chore'];
+  let cur = 'feat';
+  $('types').innerHTML = types.map(t => `<button class="btn" type="button" data-t="${t}" aria-pressed="${t === cur}">${t}</button>`).join('');
+  const rules = [['type tanpa scope', () => true], ['deskripsi tidak kosong', d => d.trim().length > 0], ['huruf kecil di awal', d => d.trim() && d.trim()[0] === d.trim()[0].toLowerCase()], ['tanpa titik di akhir', d => !/\.\s*$/.test(d)], ['maksimal 50 karakter', d => d.trim().length <= 50]];
+  const desc = $('desc');
+  const render = () => { const d = desc.value; $('preview').innerHTML = `git commit -m "<span class="ty">${cur}:</span> ${esc(d.trim()) || '...'}"`; $('rules').innerHTML = rules.map(([t, f]) => `<li class="${f(d) ? 'ok' : ''}">${t}</li>`).join(''); };
+  $('types').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; cur = b.dataset.t; $('types').querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', x === b)); render(); });
+  desc.addEventListener('input', render); render();
+  const copy = (text, btn, idle, src) => {
+    const ok = () => { btn.textContent = 'Tersalin'; burst(btn, 40); clang(1800); setTimeout(() => btn.textContent = idle, 1500); };
+    const sel = () => { const r = document.createRange(); r.selectNodeContents(src); getSelection().removeAllRanges(); getSelection().addRange(r); btn.textContent = 'Tekan Ctrl+C'; setTimeout(() => btn.textContent = idle, 2000); };
+    if (navigator.clipboard) navigator.clipboard.writeText(text).then(ok).catch(sel); else sel();
+  };
+  $('copyBtn').addEventListener('click', e => copy(`git commit -m "${cur}: ${desc.value.trim()}"`, e.currentTarget, 'Salin perintah', $('preview')));
+  $('mailBtn').addEventListener('click', e => copy('moch.bismap@gmail.com', e.currentTarget, 'Salin email', $('mailText')));
+
+  // ---------- stack ----------
+  const SHIELD = '<svg viewBox="0 0 30 30" fill="none" stroke="#F1E4CA" stroke-width="1.8" stroke-linejoin="round"><path d="M15 3 L25 7 L24 16 Q23 24 15 27 Q7 24 6 16 L5 7 Z"/><path d="M16 9 L11 16 L15 16 L13 22 L19 14 L15 14 Z" fill="#D9A441" stroke="none"/></svg>';
+  const FLAME = '<svg viewBox="0 0 30 30" fill="none" stroke="#F1E4CA" stroke-width="1.6" stroke-linejoin="round"><path d="M15 27 C 7 27, 5 20, 9 15 C 10 18, 12 19, 13 18 C 11 12, 15 7, 19 4 C 18 10, 25 12, 24 20 C 23 25, 19 27, 15 27 Z"/><path d="M15 26 C 12 25, 11 21, 14 18 C 15 20, 17 20, 17 19 C 19 21, 18 25, 15 26 Z" fill="#D9A441" stroke="none"/></svg>';
+  const groups = [
+    { id: 'backend', name: 'Backend', items: [
+      ['Python', 'Py', 'Bahasa pemrograman serbaguna yang mudah dibaca. Dipakai untuk backend, otomasi, analisis data, sampai testing.'],
+      ['Django', 'Dj', 'Framework web Python yang lengkap: sudah ada ORM, halaman admin, autentikasi, dan proteksi keamanan bawaan.'],
+      ['Flask', 'Fl', 'Framework web Python yang ringan dan minimalis. Cocok untuk API dan aplikasi yang ingin disusun modular sendiri.'],
+      ['PHP', 'PHP', 'Bahasa scripting server-side yang banyak dipakai untuk web dan bisa jalan di hampir semua layanan hosting.'],
+      ['Laravel', 'Lv', 'Framework PHP modern dengan sintaks rapi. Sudah ada ORM Eloquent, routing, migrasi database, dan autentikasi siap pakai.'],
+      ['CodeIgniter', FLAME, 'Framework PHP yang ringan dan cepat dengan konfigurasi minim. Cocok untuk aplikasi web skala kecil sampai menengah.']
+    ]},
+    { id: 'frontend', name: 'Frontend & Mobile', items: [
+      ['HTML / CSS / JS', 'JS', 'Tiga bahasa dasar web: HTML untuk struktur halaman, CSS untuk tampilan, JavaScript untuk interaksi di browser.'],
+      ['Tailwind CSS', 'Tw', 'Framework CSS berbasis utility class. Styling ditulis langsung di HTML, jadi tidak perlu file CSS yang panjang.'],
+      ['Flutter', 'Ft', 'Framework UI dari Google berbahasa Dart. Satu kode bisa jadi aplikasi Android, iOS, dan web sekaligus.']
+    ]},
+    { id: 'database', name: 'Database', items: [
+      ['PostgreSQL', 'Pg', 'Database relasional open source yang kuat. Mendukung transaksi, relasi antar tabel, dan tipe data kompleks seperti JSON.', 'db_mtoa_alr'],
+      ['MySQL', 'My', 'Database relasional yang populer, cepat, dan ringan. Banyak dipakai di aplikasi web dan layanan hosting.'],
+      ['MongoDB', 'Mg', 'Database NoSQL berbasis dokumen. Data disimpan dalam format mirip JSON, jadi strukturnya fleksibel dan mudah berubah.'],
+      ['Firestore', 'Fs', 'Database NoSQL di cloud dari Firebase (Google). Datanya tersinkron real-time, cocok untuk aplikasi mobile.']
+    ]},
+    { id: 'quality', name: 'Testing & Keamanan', items: [
+      ['Pytest', 'Pt', 'Framework testing Python. Test ditulis sebagai fungsi biasa dengan assert, jadi singkat dan mudah dibaca.'],
+      ['OWASP ZAP', SHIELD, 'Tool open source untuk memindai celah keamanan aplikasi web, seperti XSS, SQL injection, dan konfigurasi yang lemah.']
+    ]},
+    { id: 'lang', name: 'Bahasa Lainnya', items: [
+      ['C++', 'C++', 'Bahasa pemrograman yang sangat cepat dan dekat ke hardware. Dipakai untuk game, sistem, dan aplikasi yang butuh performa tinggi.'],
+      ['C#', 'C#', 'Bahasa pemrograman dari Microsoft di platform .NET. Dipakai untuk aplikasi desktop Windows, web ASP.NET, dan game Unity.']
+    ]},
+    { id: 'tools', name: 'Tools', items: [
+      ['Git', 'Gt', 'Sistem kontrol versi yang mencatat setiap perubahan kode, jadi bisa kerja per branch dan kembali ke versi lama.'],
+      ['GitLab CI', 'GL', 'Fitur GitLab yang menjalankan build dan test otomatis setiap kali kode di-push ke repository.'],
+      ['PowerShell', 'PS', 'Shell dan bahasa scripting di Windows untuk menjalankan perintah, mengelola file, dan otomasi tugas.'],
+      ['VS Code', 'VS', 'Code editor gratis dari Microsoft yang ringan, dengan ribuan extension untuk hampir semua bahasa.']
+    ]}
+  ];
+  const colsFor = n => n % 3 === 0 ? 3 : n === 4 ? 2 : n;
+  $('groups').innerHTML = groups.map(g => `<div class="group" data-g="${g.id}"><div class="group-title"><h3>${g.name}</h3><small>${g.items.length} ALAT</small></div><div class="cards" style="--cols:${colsFor(g.items.length)}">${
+    g.items.map(([n, mark, d, tag]) => `<article class="plaque"><div class="hanko" style="${mark.length > 2 && !mark.startsWith('<') ? 'font-size:14px' : ''}">${mark}</div><b>${n}${tag ? `<em>${tag}</em>` : ''}</b><p>${d}</p></article>`).join('')
+  }</div></div>`).join('');
+  document.querySelectorAll('.plaque').forEach(p => p.addEventListener('pointerenter', () => swish(.18)));
+  const total = groups.reduce((a, g) => a + g.items.length, 0);
+  $('filters').innerHTML = [`<button class="btn" type="button" data-f="all" aria-pressed="true">Semua <span class="c">${total}</span></button>`].concat(groups.map(g => `<button class="btn" type="button" data-f="${g.id}" aria-pressed="false">${g.name} <span class="c">${g.items.length}</span></button>`)).join('');
+  $('filters').addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b) return;
+    $('filters').querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', x === b)); swish(.3);
+    document.querySelectorAll('.group').forEach(g => { const show = b.dataset.f === 'all' || g.dataset.g === b.dataset.f; g.classList.toggle('off', !show); if (show && !reduce) { g.classList.remove('enter'); void g.offsetWidth; g.classList.add('enter'); } });
+  });
+
+
+  // ---------- instagram (isi username kalau sudah ada) ----------
+  const IG_USERNAME = 'bisma.prasetya_';
+  if (IG_USERNAME) { const ig = $('igLink'); ig.href = 'https://instagram.com/' + IG_USERNAME; ig.textContent = 'instagram.com/' + IG_USERNAME; ig.hidden = false; }
+
+  // ---------- timeline lanterns ----------
+  const tItems = document.querySelectorAll('.t-item');
+  if ('IntersectionObserver' in window && !reduce) {
+    const tio = new IntersectionObserver(es => es.forEach(en => { if (en.isIntersecting) { en.target.classList.add('lit'); swish(.2); tio.unobserve(en.target); } }), { threshold: .6 });
+    tItems.forEach(el => tio.observe(el));
+  } else tItems.forEach(el => el.classList.add('lit'));
+
+  // ---------- project gallery ----------
+  const projects = [
+    { c: 'kantor', t: 'ALR · Access Link Register', d: 'Web app yang menyatukan link akses ICT yang tersebar ke satu tempat. Login OTP, RBAC Public/Private, validasi link, export Excel, dan audit log.', tags: ['Python', 'PostgreSQL', 'Pytest', 'HTML/CSS/JS'], star: true, feat: ['Login email + OTP', 'RBAC Admin & User Entry', 'Data Public / Private', 'Validasi & cek duplikasi link', 'Workspace & invite anggota', 'Audit log immutable'] },
+    { c: 'kantor', t: 'Inventaris Aset IT', d: 'Mencatat dan melacak aset IT kantor, dari perangkat seperti laptop dan printer sampai lisensi software.', tags: ['Django', 'Python'] },
+    { c: 'kantor', t: 'Dashboard Laporan', d: 'Merangkum data menjadi rekap dan grafik agar manajemen bisa membaca kondisi dengan cepat.', tags: ['Django', 'Python'] },
+    { c: 'web', t: 'Toko Online', d: 'Website toko online untuk menampilkan katalog produk dan mengelola pesanan.', tags: ['Laravel', 'MySQL'] },
+    { c: 'web', t: 'Sistem Informasi', d: 'Sistem informasi berbasis web untuk mengelola data instansi seperti sekolah atau klinik.', tags: ['Laravel', 'MySQL'] },
+    { c: 'mobile', t: 'Aplikasi Kasir (POS)', d: 'Aplikasi kasir untuk mencatat transaksi penjualan langsung dari HP.', tags: ['Flutter'] },
+    { c: 'mobile', t: 'Katalog & Pemesanan', d: 'Aplikasi katalog produk dengan alur pemesanan di dalamnya.', tags: ['Flutter'] },
+    { c: 'mobile', t: 'Pelaporan Lapangan', d: 'Aplikasi untuk mengirim laporan kegiatan langsung dari lapangan.', tags: ['Flutter'] },
+    { c: 'kuliah', t: 'Skripsi: Inventaris Toko Kelontong', d: 'Aplikasi mobile untuk mencatat stok barang toko kelontong, dengan data yang tersinkron real-time di cloud.', tags: ['Flutter', 'Firestore'] }
+  ];
+  const cats = { kantor: 'Aplikasi kantor', web: 'Website', mobile: 'Mobile', kuliah: 'Kuliah' };
+  $('projects').innerHTML = projects.map(pj => `<article class="proj${pj.star ? ' star' : ''}" data-c="${pj.c}"><div class="cat"><span>${cats[pj.c]}</span>${pj.star ? '<em>proyek unggulan</em>' : ''}</div><h3>${esc(pj.t)}</h3><p>${esc(pj.d)}</p>${pj.feat ? `<ul class="feat">${pj.feat.map(f => `<li>${esc(f)}</li>`).join('')}</ul>` : ''}<div class="tags">${pj.tags.map(x => `<span>${esc(x)}</span>`).join('')}</div></article>`).join('');
+  $('pFilters').innerHTML = [`<button class="btn" type="button" data-f="all" aria-pressed="true">Semua <span class="c">${projects.length}</span></button>`]
+    .concat(Object.keys(cats).map(k => `<button class="btn" type="button" data-f="${k}" aria-pressed="false">${cats[k]} <span class="c">${projects.filter(p => p.c === k).length}</span></button>`)).join('');
+  $('pFilters').addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b) return;
+    $('pFilters').querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', x === b)); swish(.3);
+    document.querySelectorAll('.proj').forEach(el => {
+      const show = b.dataset.f === 'all' || el.dataset.c === b.dataset.f;
+      el.classList.toggle('off', !show);
+      el.classList.toggle('star', show && b.dataset.f === 'all' && projects.find(p => p.t === el.querySelector('h3').textContent)?.star);
+      if (show && !reduce) { el.classList.remove('enter'); void el.offsetWidth; el.classList.add('enter'); }
+    });
+  });
+  document.querySelectorAll('.proj').forEach(el => el.addEventListener('pointerenter', () => swish(.18)));
+
+  // ---------- ZAP scan simulator ----------
+  const findings = [
+    ['high', 'Cross Site Scripting (Reflected)', 'HIGH'], ['high', 'SQL Injection', 'HIGH'],
+    ['med', 'Content Security Policy tidak diset', 'MEDIUM'], ['med', 'Tidak ada batas percobaan login', 'MEDIUM'],
+    ['low', 'Cookie tanpa flag HttpOnly', 'LOW']
+  ];
+  let scanning = false;
+  $('scanBtn').addEventListener('click', async () => {
+    if (scanning) return; scanning = true;
+    const wait = ms => new Promise(r => setTimeout(r, reduce ? 0 : ms));
+    $('scanBtn').disabled = true; $('fixBtn').disabled = true;
+    $('alerts').innerHTML = ''; $('scanMeter').style.width = '0';
+    for (let i = 0; i < findings.length; i++) {
+      await wait(420 + Math.random() * 300);
+      const [lv, nm, lab] = findings[i];
+      $('alerts').insertAdjacentHTML('beforeend', `<div class="alert"><span class="lv ${lv}">${lab}</span><span class="nm">${nm}</span><span class="st">DITEMUKAN</span></div>`);
+      $('scanMeter').style.width = ((i + 1) / findings.length * 100) + '%';
+      if (lv === 'high') thud(); else clang(900);
+    }
+    scanning = false; $('scanBtn').disabled = false; $('scanBtn').textContent = 'Scan ulang'; $('fixBtn').disabled = false;
+  });
+  $('fixBtn').addEventListener('click', async () => {
+    const wait = ms => new Promise(r => setTimeout(r, reduce ? 0 : ms));
+    $('fixBtn').disabled = true;
+    const els = document.querySelectorAll('.alert:not(.fixed)');
+    for (const el of els) {
+      await wait(260);
+      el.classList.add('fixed'); el.querySelector('.st').textContent = 'DIPERBAIKI'; swish(.35);
+      const r = el.getBoundingClientRect(); burstAt(r.right - 30, r.top + r.height / 2, 18);
+    }
+    await wait(200);
+    if (els.length) { clang(1300); burst($('fixBtn'), 50); }
+  });
+
+  // ---------- scroll: reveal + heading cuts ----------
+  if (!reduce && 'IntersectionObserver' in window) {
+    const io = new IntersectionObserver(es => es.forEach(en => { if (en.isIntersecting) { en.target.classList.remove('pre'); io.unobserve(en.target); } }), { threshold: .08 });
+    document.querySelectorAll('.reveal').forEach(el => { if (el.getBoundingClientRect().top > innerHeight) { el.classList.add('pre'); io.observe(el); } });
+    const hc = new IntersectionObserver(es => es.forEach(en => { if (en.isIntersecting) { en.target.classList.add('cut'); swish(.25); hc.unobserve(en.target); } }), { threshold: 1 });
+    document.querySelectorAll('.cutline').forEach(el => hc.observe(el));
+  }
+})();
+</script>
+</body></html>

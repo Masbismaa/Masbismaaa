@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="340" viewBox="0 0 900 340">
+  <style>
+    @keyframes sway { 0%, 100% { transform: rotate(-6deg); } 50% { transform: rotate(6deg); } }
+    @keyframes glow { 0%, 100% { opacity: .55; } 50% { opacity: 1; } }
+    @keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+    @keyframes ember { 0% { transform: translateY(0); opacity: 0; } 15% { opacity: .9; } 100% { transform: translateY(-160px); opacity: 0; } }
+    @keyframes drift { from { transform: translateX(0); } to { transform: translateX(-120px); } }
+    .sway { transform-box: fill-box; transform-origin: 50% 0; animation: sway 3.4s ease-in-out infinite; }
+    .glow { animation: glow 2.4s ease-in-out infinite; }
+    .rise { animation: rise .9s cubic-bezier(.22,1,.36,1) var(--s, 0s) both; }
+    .ember { animation: ember var(--d, 5s) linear var(--s, 0s) infinite; }
+    @keyframes t0 { 0%, 8% { fill: #3B1512; } 11%, 92% { fill: #E0482F; } 100% { fill: #3B1512; } }
+    @keyframes x0 { 0%, 8% { fill: #A99C86; } 11%, 92% { fill: #F3E6CC; } 100% { fill: #A99C86; } }
+    .t0 { animation: t0 11s ease-out infinite; } .x0 { animation: x0 11s ease-out infinite; }
+    @keyframes t1 { 0%, 15% { fill: #3B1512; } 18%, 92% { fill: #E0482F; } 100% { fill: #3B1512; } }
+    @keyframes x1 { 0%, 15% { fill: #A99C86; } 18%, 92% { fill: #F3E6CC; } 100% { fill: #A99C86; } }
+    .t1 { animation: t1 11s ease-out infinite; } .x1 { animation: x1 11s ease-out infinite; }
+    @keyframes t2 { 0%, 22% { fill: #3B1512; } 25%, 92% { fill: #E0482F; } 100% { fill: #3B1512; } }
+    @keyframes x2 { 0%, 22% { fill: #A99C86; } 25%, 92% { fill: #F3E6CC; } 100% { fill: #A99C86; } }
+    .t2 { animation: t2 11s ease-out infinite; } .x2 { animation: x2 11s ease-out infinite; }
+    @keyframes t3 { 0%, 29% { fill: #3B1512; } 32%, 92% { fill: #E0482F; } 100% { fill: #3B1512; } }
+    @keyframes x3 { 0%, 29% { fill: #A99C86; } 32%, 92% { fill: #F3E6CC; } 100% { fill: #A99C86; } }
+    .t3 { animation: t3 11s ease-out infinite; } .x3 { animation: x3 11s ease-out infinite; }
+    @keyframes t4 { 0%, 36% { fill: #3B1512; } 39%, 92% { fill: #E0482F; } 100% { fill: #3B1512; } }
+    @keyframes x4 { 0%, 36% { fill: #A99C86; } 39%, 92% { fill: #F3E6CC; } 100% { fill: #A99C86; } }
+    .t4 { animation: t4 11s ease-out infinite; } .x4 { animation: x4 11s ease-out infinite; }
+    @keyframes t5 { 0%, 43% { fill: #3B1512; } 46%, 92% { fill: #E0482F; } 100% { fill: #3B1512; } }
+    @keyframes x5 { 0%, 43% { fill: #A99C86; } 46%, 92% { fill: #F3E6CC; } 100% { fill: #A99C86; } }
+    .t5 { animation: t5 11s ease-out infinite; } .x5 { animation: x5 11s ease-out infinite; }
+    @keyframes t6 { 0%, 50% { fill: #3B1512; } 53%, 92% { fill: #E0482F; } 100% { fill: #3B1512; } }
+    @keyframes x6 { 0%, 50% { fill: #A99C86; } 53%, 92% { fill: #F3E6CC; } 100% { fill: #A99C86; } }
+    .t6 { animation: t6 11s ease-out infinite; } .x6 { animation: x6 11s ease-out infinite; }
+    @keyframes stamp { 0%, 60% { transform: scale(0) rotate(-14deg); opacity: 0; } 64% { transform: scale(1.15) rotate(-8deg); opacity: 1; } 68%, 92% { transform: scale(1) rotate(-8deg); opacity: 1; } 100% { opacity: 0; } }
+    .stamp { transform-box: fill-box; transform-origin: center; animation: stamp 11s ease-out infinite; }
+  </style>
+  <defs>
+    <radialGradient id="lg"><stop offset="0" stop-color="#E0482F" stop-opacity=".55"/><stop offset="1" stop-color="#E0482F" stop-opacity="0"/></radialGradient>
+    <radialGradient id="bg" cx="60%" cy="45%" r="75%"><stop offset="0" stop-color="#261829"/><stop offset="1" stop-color="#0E0B16"/></radialGradient>
+    <pattern id="shoji" width="24" height="30" patternUnits="userSpaceOnUse"><rect width="24" height="30" fill="#E9D3A6"/><path d="M0 0 H24 M0 0 V30" stroke="#3A2419" stroke-width="2"/></pattern>
+  </defs>
+  <rect width="900" height="340" rx="10" fill="url(#bg)"/>
+  <rect x="20" y="20" width="860" height="300" rx="6" fill="#2A1A14" stroke="#D9A441" stroke-opacity=".4"/>
+  <rect x="40" y="18" width="820" height="4" fill="#B3262E"/>
+  <text x="44" y="56" font-family="Consolas,'SFMono-Regular',Menlo,monospace" font-size="12" fill="#D9A441">PS C:\alr&gt; pytest -v</text>
+  <ellipse class="t0" cx="62" cy="87" rx="8" ry="11" fill="#3B1512" stroke="#D9A441" stroke-width="1"/><text class="x0" x="84" y="92" font-family="Consolas,'SFMono-Regular',Menlo,monospace" font-size="14" fill="#A99C86">test_login_email_korporat_valid</text><ellipse class="t1" cx="62" cy="119" rx="8" ry="11" fill="#3B1512" stroke="#D9A441" stroke-width="1"/><text class="x1" x="84" y="124" font-family="Consolas,'SFMono-Regular',Menlo,monospace" font-size="14" fill="#A99C86">test_otp_kadaluarsa_ditolak</text><ellipse class="t2" cx="62" cy="151" rx="8" ry="11" fill="#3B1512" stroke="#D9A441" stroke-width="1"/><text class="x2" x="84" y="156" font-family="Consolas,'SFMono-Regular',Menlo,monospace" font-size="14" fill="#A99C86">test_admin_tidak_lihat_data_private</text><ellipse class="t3" cx="62" cy="183" rx="8" ry="11" fill="#3B1512" stroke="#D9A441" stroke-width="1"/><text class="x3" x="84" y="188" font-family="Consolas,'SFMono-Regular',Menlo,monospace" font-size="14" fill="#A99C86">test_user_entry_readonly_public_orang_lain</text><ellipse class="t4" cx="62" cy="215" rx="8" ry="11" fill="#3B1512" stroke="#D9A441" stroke-width="1"/><text class="x4" x="84" y="220" font-family="Consolas,'SFMono-Regular',Menlo,monospace" font-size="14" fill="#A99C86">test_url_tanpa_http_ditolak</text><ellipse class="t5" cx="62" cy="247" rx="8" ry="11" fill="#3B1512" stroke="#D9A441" stroke-width="1"/><text class="x5" x="84" y="252" font-family="Consolas,'SFMono-Regular',Menlo,monospace" font-size="14" fill="#A99C86">test_duplikasi_url_terdeteksi</text><ellipse class="t6" cx="62" cy="279" rx="8" ry="11" fill="#3B1512" stroke="#D9A441" stroke-width="1"/><text class="x6" x="84" y="284" font-family="Consolas,'SFMono-Regular',Menlo,monospace" font-size="14" fill="#A99C86">test_audit_log_tidak_bisa_diubah</text>
+  <g class="stamp"><rect x="660" y="220" width="170" height="64" rx="6" fill="none" stroke="#E0482F" stroke-width="3"/><text x="745" y="263" text-anchor="middle" font-family="'Shippori Mincho B1','Yu Mincho','Hiragino Mincho ProN',Georgia,serif" font-size="28" font-weight="800" fill="#E0482F">7/7 LULUS</text></g>
+  <circle class="ember" style="--d:6.0s;--s:0.4s" cx="351" cy="331" r="1.6" fill="#D9A441"/><circle class="ember" style="--d:5.7s;--s:4.5s" cx="568" cy="334" r="1.6" fill="#D9A441"/><circle class="ember" style="--d:5.3s;--s:0.3s" cx="239" cy="338" r="1.2" fill="#D9A441"/><circle class="ember" style="--d:4.2s;--s:2.8s" cx="112" cy="305" r="1.6" fill="#D9A441"/><circle class="ember" style="--d:5.7s;--s:0.3s" cx="248" cy="300" r="2.2" fill="#E0482F"/><circle class="ember" style="--d:6.9s;--s:0.2s" cx="619" cy="315" r="1.2" fill="#D9A441"/><circle class="ember" style="--d:4.4s;--s:0.6s" cx="156" cy="322" r="1.6" fill="#D9A441"/><circle class="ember" style="--d:4.5s;--s:2.9s" cx="335" cy="305" r="2.2" fill="#E0482F"/>
+</svg>

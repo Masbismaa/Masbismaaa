@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="116" viewBox="0 0 900 116">
+  <style>
+    @keyframes sway { 0%, 100% { transform: rotate(-6deg); } 50% { transform: rotate(6deg); } }
+    @keyframes glow { 0%, 100% { opacity: .55; } 50% { opacity: 1; } }
+    @keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+    @keyframes ember { 0% { transform: translateY(0); opacity: 0; } 15% { opacity: .9; } 100% { transform: translateY(-160px); opacity: 0; } }
+    @keyframes drift { from { transform: translateX(0); } to { transform: translateX(-120px); } }
+    .sway { transform-box: fill-box; transform-origin: 50% 0; animation: sway 3.4s ease-in-out infinite; }
+    .glow { animation: glow 2.4s ease-in-out infinite; }
+    .rise { animation: rise .9s cubic-bezier(.22,1,.36,1) var(--s, 0s) both; }
+    .ember { animation: ember var(--d, 5s) linear var(--s, 0s) infinite; }
+    @keyframes shine { 0%, 55% { transform: translateX(-160px) skewX(-20deg); } 80%, 100% { transform: translateX(900px) skewX(-20deg); } }
+    .shine { animation: shine 3.6s ease-in-out infinite; }
+    @keyframes nudge { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(10px); } }
+    .arrow { animation: nudge 1.2s ease-in-out infinite; }
+  </style>
+  <defs>
+    <radialGradient id="lg"><stop offset="0" stop-color="#E0482F" stop-opacity=".55"/><stop offset="1" stop-color="#E0482F" stop-opacity="0"/></radialGradient>
+    <radialGradient id="bg" cx="60%" cy="45%" r="75%"><stop offset="0" stop-color="#261829"/><stop offset="1" stop-color="#0E0B16"/></radialGradient>
+    <pattern id="shoji" width="24" height="30" patternUnits="userSpaceOnUse"><rect width="24" height="30" fill="#E9D3A6"/><path d="M0 0 H24 M0 0 V30" stroke="#3A2419" stroke-width="2"/></pattern>
+  </defs>
+  <rect width="900" height="116" rx="10" fill="url(#bg)"/>
+  <clipPath id="bc"><rect x="150" y="22" width="600" height="72" rx="6"/></clipPath>
+  <rect x="150" y="22" width="600" height="72" rx="6" fill="#B3262E" stroke="#E0482F" stroke-width="2"/>
+  <g clip-path="url(#bc)"><rect x="0" y="0" width="70" height="120" fill="#fff" opacity=".18" class="shine"/></g>
+  <rect x="164" y="30" width="3" height="56" fill="#D9A441"/>
+  <text x="200" y="66" font-family="'Shippori Mincho B1','Yu Mincho','Hiragino Mincho ProN',Georgia,serif" font-size="22" font-weight="800" fill="#D9A441">入口</text>
+  <text x="440" y="66" text-anchor="middle" font-family="'Shippori Mincho B1','Yu Mincho','Hiragino Mincho ProN',Georgia,serif" font-size="26" font-weight="800" fill="#F3E6CC">Masuki kastil interaktif</text>
+  <g class="arrow"><path d="M660 58 h50 M694 44 l16 14 -16 14" fill="none" stroke="#F3E6CC" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></g>
+  <g class="sway" style="animation-delay:0s"><line x1="110" y1="0" x2="110" y2="11.200000000000001" stroke="#D9A441" stroke-width="1.2"/><ellipse class="glow" cx="110" cy="24.0" rx="20.8" ry="24.0" fill="url(#lg)"/><rect x="102.8" y="10.4" width="14.4" height="2.4000000000000004" fill="#D9A441"/><ellipse cx="110" cy="24.0" rx="8.8" ry="12.0" fill="#E0482F" stroke="#D9A441" stroke-width="1"/><line x1="101.2" y1="24.0" x2="118.8" y2="24.0" stroke="#B3262E" stroke-width="1"/><rect x="105.2" y="35.2" width="9.600000000000001" height="2.4000000000000004" fill="#D9A441"/></g><g class="sway" style="animation-delay:1s"><line x1="790" y1="0" x2="790" y2="11.200000000000001" stroke="#D9A441" stroke-width="1.2"/><ellipse class="glow" cx="790" cy="24.0" rx="20.8" ry="24.0" fill="url(#lg)"/><rect x="782.8" y="10.4" width="14.4" height="2.4000000000000004" fill="#D9A441"/><ellipse cx="790" cy="24.0" rx="8.8" ry="12.0" fill="#E0482F" stroke="#D9A441" stroke-width="1"/><line x1="781.2" y1="24.0" x2="798.8" y2="24.0" stroke="#B3262E" stroke-width="1"/><rect x="785.2" y="35.2" width="9.600000000000001" height="2.4000000000000004" fill="#D9A441"/></g>
+</svg>
